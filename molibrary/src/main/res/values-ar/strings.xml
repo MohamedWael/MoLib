@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_connection">من فضلك تأكد من إتصالك بالإنترنت</string>
+    <string name="ok">نعم</string>
+    <string name="connection_error">خطأ فى الإتصال بالإنترنت</string>
+</resources>

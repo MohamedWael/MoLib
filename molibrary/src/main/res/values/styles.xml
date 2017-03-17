@@ -1,0 +1,31 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="Text">
+
+    </style>
+
+    <style name="Text20Style" parent="Text">
+        <item name="android:textSize">@dimen/text_size20</item>
+    </style>
+
+    <style name="Text18Style" parent="Text">
+        <item name="android:textSize">@dimen/text_size18</item>
+    </style>
+
+    <style name="Text16Style" parent="Text">
+        <item name="android:textSize">@dimen/text_size16</item>
+    </style>
+
+    <style name="Text14Style" parent="Text">
+        <item name="android:textSize">@dimen/text_size14</item>
+    </style>
+</resources>
