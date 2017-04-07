@@ -1,4 +1,4 @@
-package com.blogspot.mowael.molib.database;
+package com.blogspot.mowael.molib.storage.database;
 
 import android.content.Context;
 
@@ -12,6 +12,7 @@ import io.realm.RealmResults;
  */
 
 public class RealmDB {
+
 
     private static RealmDB instance;
     private final Realm realm;
@@ -61,11 +62,17 @@ public class RealmDB {
      * @return true if objects was deleted, false otherwise.
      */
     public <T extends RealmObject> boolean deleteAll(Class<T> clazz) {
-        return getAll(clazz).deleteAllFromRealm();
+        realm.beginTransaction();
+        boolean deleted = getAll(clazz).deleteAllFromRealm();
+        realm.commitTransaction();
+        return deleted;
+
     }
 
     public <T extends RealmObject> void delete(Class<T> clazz, int atIndex) {
+        realm.beginTransaction();
         getAll(clazz).get(atIndex).deleteFromRealm();
+        realm.commitTransaction();
     }
 
     public <T extends RealmObject> RealmQuery<T> getQuery(Class<T> clazz) {

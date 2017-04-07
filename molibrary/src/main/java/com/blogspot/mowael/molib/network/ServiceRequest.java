@@ -53,7 +53,6 @@ public class ServiceRequest extends JsonObjectRequest {
         return serviceRequest;
     }
 
-
     @Override
     public byte[] getBody() {
         Logger.d("body", getJsonRequestBody().toString());

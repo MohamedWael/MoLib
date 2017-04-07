@@ -1,7 +1,9 @@
-package com.blogspot.mowael.molib.utilities;
+package com.blogspot.mowael.molib.storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.blogspot.mowael.molib.utilities.MoConstants;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -15,8 +17,7 @@ public class SharedPreferencesManager {
     private SharedPreferences prefs;
 
     public static SharedPreferencesManager getInstance(Context mContext) {
-        if (ourInstance == null)
-            ourInstance = new SharedPreferencesManager(mContext);
+        if (ourInstance == null) ourInstance = new SharedPreferencesManager(mContext);
         return ourInstance;
     }
 
@@ -37,16 +38,25 @@ public class SharedPreferencesManager {
         return editor = prefs.edit();
     }
 
+    /**
+     * Returns true if the new values were successfully written to persistent storage
+     * or returns false if editor is null or the values weren't written to persistent storage
+     */
+    public boolean closeEditor() {
+        if (editor != null) return editor.commit();
+        return false;
+    }
+
     public SharedPreferences.Editor getEditor() {
         if (editor == null) {
-            initEditor();
+            return initEditor();
         }
         return editor;
     }
 
     public SharedPreferences getPrefs() {
         if (prefs == null) {
-            initSharedPreferences();
+            return initSharedPreferences();
         }
         return prefs;
     }

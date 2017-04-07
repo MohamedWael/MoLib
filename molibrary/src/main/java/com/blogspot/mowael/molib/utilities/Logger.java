@@ -21,13 +21,37 @@ public class Logger {
             Log.e(tag, message);
     }
 
-    public static void i(String tag, String msg) {
+    public static void i(String tag, String message) {
         if (MoConstants.LOG_TOGGLE)
-            Log.i(tag, msg);
+            Log.i(tag, message);
     }
 
-    public static void w(String tag, String msg) {
+    public static void w(String tag, String message) {
         if (MoConstants.LOG_TOGGLE)
-            Log.w(tag, msg);
+            Log.w(tag, message);
+    }
+
+    public static void d(String message) {
+        d(getClassName(), message);
+    }
+
+    public static void e(String message) {
+        e(getClassName(), message);
+    }
+
+    public static void i(String message) {
+        i(getClassName(), message);
+    }
+
+    public static void w(String message) {
+        w(getClassName(), message);
+    }
+
+    private static String getClassName() {
+        StackTraceElement[] trace = Thread.currentThread().getStackTrace();
+        StackTraceElement relevantTrace = trace[4];
+        String className = relevantTrace.getClassName();
+        int lastIndex = className.lastIndexOf('.');
+        return className.substring(lastIndex + 1);
     }
 }

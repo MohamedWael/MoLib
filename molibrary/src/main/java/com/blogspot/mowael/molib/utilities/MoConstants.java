@@ -1,15 +1,15 @@
 package com.blogspot.mowael.molib.utilities;
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.util.AndroidRuntimeException;
-import android.util.DisplayMetrics;
-
 /**
  * Created by moham on 3/2/2017.
  */
 
 public class MoConstants {
+
+    private final static long NONE_LONG = Long.MIN_VALUE;
+    private final static double NONE_DOUBLE = Double.MIN_VALUE;
+    private final static int NONE_INT = Integer.MIN_VALUE;
+    private final static float NONE_FLOAT = Float.MIN_VALUE;
 
     public static final int SPLASH_TIME_OUT = 3000;
 

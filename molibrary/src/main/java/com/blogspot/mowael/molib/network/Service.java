@@ -19,6 +19,10 @@ import java.util.ArrayList;
  */
 public class Service implements NetworkStateReceiver.NetworkStateReceiverListener {
     private static Service ourInstance;
+    public static final String _METHOD = "_method";
+    public static final String _METHOD_POST = "POST";
+    public static final String _METHOD_PATCH = "PATCH";
+    public static final String _METHOD_DESTROY = "DESTROY";
     private final VolleySingleton volley;
     private final Context mContext;
     private ArrayList<ServiceRequest> requests;
