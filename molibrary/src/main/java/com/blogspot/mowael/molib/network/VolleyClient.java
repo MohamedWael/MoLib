@@ -1,6 +1,5 @@
 package com.blogspot.mowael.molib.network;
 
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -17,23 +16,22 @@ import java.net.URLEncoder;
 /**
  * Created by moham on 12/11/2016.
  */
-public class VolleySingleton {
+public class VolleyClient {
 
-
-    private static VolleySingleton mInstance;
+    private static VolleyClient mInstance;
     private Context mContext;
     private RequestQueue mRequestQueue;
     private RequestQueue mDownloadRequestQueue;
 
-    private VolleySingleton(Context context) {
+    private VolleyClient(Context context) {
         this.mContext = context;
         this.mRequestQueue = getRequestQueue();
     }
 
-    public static synchronized VolleySingleton getInstance(Context context) {
+    public static synchronized VolleyClient getInstance(Context context) {
 
         if (mInstance == null) {
-            mInstance = new VolleySingleton(context);
+            mInstance = new VolleyClient(context);
             return mInstance;
         } else {
             return mInstance;
@@ -86,16 +84,24 @@ public class VolleySingleton {
     }
 
 
-    public void openEmailClient(Context mContext, /*String mailto,*/ String mail, String subject, String msg) {
-        Intent mailIntent = new Intent(Intent.ACTION_SEND/*, Uri.parse("mailto:" + mailto)*/);
+     public static void openEmailClient(Context mContext, /*String mailto,*/ String mail, String subject, String msg) {
+        Intent mailIntent = new Intent(Intent.ACTION_SEND, Uri.parse("mailto:" + mail));
         mailIntent.setType("text/html");
-        mailIntent.putExtra(Intent.EXTRA_EMAIL, mail);
+        mailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail});
         mailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
         mailIntent.putExtra(Intent.EXTRA_TEXT, msg);
         try {
             mContext.startActivity(Intent.createChooser(mailIntent, "Send Email"));
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(mContext, "No email clients installed.", Toast.LENGTH_SHORT).show();
+        }
+    }
+	
+	  public static boolean isValidEmail(CharSequence target) {
+        if (target == null) {
+            return false;
+        } else {
+            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
         }
     }
 

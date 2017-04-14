@@ -2,7 +2,7 @@ package com.blogspot.mowael.molib.application;
 
 import android.app.Application;
 
-import com.blogspot.mowael.molib.network.VolleySingleton;
+import com.blogspot.mowael.molib.network.VolleyClient;
 import com.blogspot.mowael.molib.storage.CacheManager;
 import com.blogspot.mowael.molib.storage.SharedPreferencesManager;
 
@@ -17,6 +17,6 @@ public class MoApplication extends Application {
         super.onCreate();
         CacheManager.getInstance();
         SharedPreferencesManager.getInstance(this);
-        VolleySingleton.getInstance(this).getRequestQueue().start();
+        VolleyClient.getInstance(this).getRequestQueue().start();
     }
 }

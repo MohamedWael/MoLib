@@ -2,7 +2,9 @@ package com.blogspot.mowael.molib.utilities;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.design.widget.Snackbar;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.widget.Toast;
 
 /**
@@ -11,6 +13,14 @@ import android.widget.Toast;
 
 public class ViewUtils {
 
+    private ViewUtils() {
+    }
+
+    public static Snackbar snakeMsg(View view, String msg) {
+        Snackbar snackbar = Snackbar.make(view, msg, Snackbar.LENGTH_LONG);
+        snackbar.show();
+        return snackbar;
+    }
 
     public static Toast toastMsg(Context context, String msg) {
         Toast toast = Toast.makeText(context, msg, Toast.LENGTH_LONG);
