@@ -3,13 +3,13 @@ package com.blogspot.mowael.molib.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.WindowManager;
+import android.support.v7.app.AppCompatActivity;
 
 import com.blogspot.mowael.molib.R;
 import com.blogspot.mowael.molib.utilities.Logger;
 import com.blogspot.mowael.molib.utilities.MoConstants;
 
-public class SplashScreenActivity extends MoActivity implements SplashScreenSettings {
+public class MoSplashScreenActivity extends MoActivity implements SplashScreenSettings {
 
     private SplashScreenSettings settings;
     private final String SPLASH_SCREEN_SETTINGS = "SplashScreenSettings";
@@ -17,7 +17,8 @@ public class SplashScreenActivity extends MoActivity implements SplashScreenSett
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        makeFullScreen(true);
         if (settings != null) Logger.d(SPLASH_SCREEN_SETTINGS, "Override");
         else Logger.d(SPLASH_SCREEN_SETTINGS, "Default");
         setContentView(settings != null ? settings.getSplashScreenLayout() : getSplashScreenLayout());
@@ -25,7 +26,9 @@ public class SplashScreenActivity extends MoActivity implements SplashScreenSett
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intentIntro = new Intent(SplashScreenActivity.this, MoActivity.class);
+                Intent intentIntro = new Intent(MoSplashScreenActivity.this,
+                        settings != null ? settings.getMainActivityClass() : MoActivity.class);
+
                 startActivity(intentIntro);
                 finish();
             }
@@ -38,11 +41,16 @@ public class SplashScreenActivity extends MoActivity implements SplashScreenSett
 
     @Override
     public int getSplashScreenLayout() {
-        return R.layout.activity_splash_screen;
+        return R.layout.activity_mo_splash_screen;
     }
 
     @Override
     public int getSplashScreenTimeOut() {
         return MoConstants.SPLASH_TIME_OUT;
+    }
+
+    @Override
+    public Class<? extends AppCompatActivity> getMainActivityClass() {
+        return MoActivity.class;
     }
 }

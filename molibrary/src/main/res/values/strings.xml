@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Mo Android Library</string>
+    <string name="mo_app_name" translatable="false">Mo Android Library</string>
     <string name="mo_splash_screen" translatable="false">This is Mo Splash Screen\nYou have to override it</string>
     <string name="no_connection" translatable="true">Please! make sure that you are connected to the internet</string>
     <string name="connection_error" translatable="true">Connection Error</string>

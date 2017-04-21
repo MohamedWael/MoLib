@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="firstIntroTitle">Forget About Notebooks!</string>
+    <string name="firstIntroDescription">MyNotes is the new social app that lets you share your notes, thoughts and more with the world</string>
+
+    <string name="secondIntroTitle">Perfect for Work Groups</string>
+    <string name="secondIntroDescription">MyNotes is the new social app that lets you share your notes, thoughts and more with the world</string>
+
+    <string name="thirdIntroTitle">For Brainstormers!</string>
+    <string name="thirdIntroDescription">MyNotes is the new social app that lets you share your notes, thoughts and more with the world</string>
+
+    <string name="forthIntroTitle">Social Friendly!</string>
+    <string name="forthIntroDescription">MyNotes is the new social app that lets you share your notes, thoughts and more with the world</string>
+
+</resources>

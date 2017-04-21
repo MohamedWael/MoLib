@@ -1,11 +1,29 @@
 package com.blogspot.mowael.molib.utilities;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
+import android.text.InputFilter;
+import android.text.SpannableString;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import com.blogspot.mowael.molib.activities.MoActivity;
 
 /**
  * Created by moham on 3/17/2017.
@@ -13,7 +31,86 @@ import android.widget.Toast;
 
 public class ViewUtils {
 
-    private ViewUtils() {
+    private ViewUtils instance;
+    private Context context;
+
+    public ViewUtils getInstance() {
+        if (instance == null) {
+            instance = new ViewUtils();
+        }
+        return instance;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+
+
+    /**
+     * @param context
+     * @return  LayoutInflater from the provided context
+     */
+    public static LayoutInflater getLayoutInflater(Context context) {
+        return (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public static void setMaxLength(int maxLength, EditText editText) {
+        InputFilter[] fArray = new InputFilter[1];
+        fArray[0] = new InputFilter.LengthFilter(maxLength);
+        editText.setFilters(fArray);
+    }
+
+    public static SpannableString makeSpanString(Context context, String str, int fontSize, @ColorRes int color) {
+        return makeSpan(str, fontSize, getColor(context, color));
+    }
+
+    public static SpannableString makeSpan(String str, int fontSize, @ColorInt int color) {
+        SpannableString spannableString = new SpannableString(str);
+        int length = str.length();
+        spannableString.setSpan(new AbsoluteSizeSpan(fontSize, true), 0, length, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE); // set size
+        spannableString.setSpan(new ForegroundColorSpan(color), 0, length, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);// set color
+        return spannableString;
+    }
+
+    public static SpannableString makeUnderLineString(String str, int fontSize, @ColorInt int color) {
+        SpannableString string = makeSpan(str, fontSize, color);
+        string.setSpan(new UnderlineSpan(), 0, str.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return string;
+    }
+
+    public static void startActivity(Context context, Class<? extends Activity> aClass, boolean finish) {
+        startActivity(context, aClass, null, finish);
+    }
+
+    public static void startActivity(Context context, Class<? extends Activity> aClass) {
+        startActivity(context, aClass, null, false);
+    }
+
+    public static void startActivity(Context context, Class<? extends Activity> aClass, @Nullable Bundle extras, boolean finish) {
+        Intent intent = new Intent(context, aClass);
+        if (extras != null) {
+            intent.putExtras(extras);
+        }
+        context.startActivity(intent);
+        if (finish)
+            ((Activity) context).finish();
+    }
+
+    public static int getColor(Context context, @ColorRes int id) {
+        return ContextCompat.getColor(context, id);
+    }
+
+    public static String getString(Context context, int id) {
+        return context.getString(id);
+    }
+
+    public static Drawable getDrawable(Context context, int id) {
+        return ContextCompat.getDrawable(context, id);
+    }
+
+    public static void makeFullScreen(MoActivity activity) {
+        activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     public static Snackbar snakeMsg(View view, String msg) {

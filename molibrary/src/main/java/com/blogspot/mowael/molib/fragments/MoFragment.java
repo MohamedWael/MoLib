@@ -1,9 +1,14 @@
 package com.blogspot.mowael.molib.fragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +34,7 @@ public class MoFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private FragmentManager fragmentManager;
 
     public MoFragment() {
         // Required empty public constructor
@@ -68,6 +74,62 @@ public class MoFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_mo, container, false);
     }
 
+    public void startActivity(Class<? extends Activity> aClass) {
+        startActivity(aClass, true);
+    }
+
+    public void startActivity(Class<? extends Activity> aClass, boolean finish) {
+        startActivity(getContext(), aClass, null, finish);
+    }
+
+    public void startActivity(Class<? extends Activity> aClass, Bundle extras, boolean finish) {
+        startActivity(getContext(), aClass, extras, finish);
+    }
+
+    public void startActivity(Context context, Class<? extends Activity> aClass, boolean finish) {
+        startActivity(context, aClass, null, finish);
+    }
+
+    public void startActivity(Context context, Class<? extends Activity> aClass) {
+        startActivity(context, aClass, null, false);
+    }
+
+    public void startActivity(Context context, Class<? extends Activity> aClass, @Nullable Bundle extras, boolean finish) {
+        Intent intent = new Intent(context, aClass);
+        if (extras != null) {
+            intent.putExtras(extras);
+        }
+        startActivity(intent);
+        if (finish)
+            ((Activity) context).finish();
+    }
+
+    public void loadFragment(MoFragment fragment, @IdRes int in, String tag, boolean isAddToBackStack) {
+        if (fragmentManager == null) {
+            fragmentManager = getFragmentManager();
+        }
+        if (isAddToBackStack)
+            fragmentManager.beginTransaction().addToBackStack(null).replace(in, fragment, tag).commit();
+        else fragmentManager.beginTransaction().replace(in, fragment, tag).commit();
+    }
+
+    public void loadFragment(MoFragment fragment, @IdRes int in, boolean isAddToBackStack) {
+        loadFragment(fragment, in, "", isAddToBackStack);
+    }
+
+    public void loadFragment(MoFragment fragment, @IdRes int in) {
+        loadFragment(fragment, in, true);
+    }
+
+    public void loadFragment(MoFragment fragment, boolean isAddToBackStack) {
+        loadFragment(fragment, R.id.flFragment, isAddToBackStack);
+    }
+
+    public void loadFragment(MoFragment fragment) {
+        loadFragment(fragment, true);
+    }
+
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -81,8 +143,7 @@ public class MoFragment extends Fragment {
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+//            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -106,4 +167,6 @@ public class MoFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
 }

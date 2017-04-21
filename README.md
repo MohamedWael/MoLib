@@ -1,2 +1,2 @@
-# MoLib
-A library to help me speed up application production
+## MoLib
+A general purpose library to help me speed up application production.
