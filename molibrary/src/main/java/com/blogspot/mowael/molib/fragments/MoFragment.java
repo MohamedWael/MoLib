@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.blogspot.mowael.molib.R;
+import com.blogspot.mowael.molib.presenter.MoMVP;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,7 +24,7 @@ import com.blogspot.mowael.molib.R;
  * Use the {@link MoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MoFragment extends Fragment {
+public class MoFragment extends Fragment implements MoMVP.MoView {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
