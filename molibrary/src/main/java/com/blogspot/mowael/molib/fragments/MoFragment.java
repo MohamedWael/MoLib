@@ -104,7 +104,7 @@ public class MoFragment extends Fragment {
             ((Activity) context).finish();
     }
 
-    public void loadFragment(MoFragment fragment, @IdRes int in, String tag, boolean isAddToBackStack) {
+    public <T extends MoFragment> void loadFragment(T fragment, @IdRes int in, String tag, boolean isAddToBackStack) {
         if (fragmentManager == null) {
             fragmentManager = getFragmentManager();
         }
@@ -113,19 +113,19 @@ public class MoFragment extends Fragment {
         else fragmentManager.beginTransaction().replace(in, fragment, tag).commit();
     }
 
-    public void loadFragment(MoFragment fragment, @IdRes int in, boolean isAddToBackStack) {
-        loadFragment(fragment, in, "", isAddToBackStack);
+    public <T extends MoFragment> void loadFragment(T fragment, @IdRes int in, boolean isAddToBackStack) {
+        loadFragment(fragment, in, fragment.getClass().getSimpleName(), isAddToBackStack);
     }
 
-    public void loadFragment(MoFragment fragment, @IdRes int in) {
+    public <T extends MoFragment> void loadFragment(T fragment, @IdRes int in) {
         loadFragment(fragment, in, true);
     }
 
-    public void loadFragment(MoFragment fragment, boolean isAddToBackStack) {
+    public <T extends MoFragment> void loadFragment(T fragment, boolean isAddToBackStack) {
         loadFragment(fragment, R.id.flFragment, isAddToBackStack);
     }
 
-    public void loadFragment(MoFragment fragment) {
+    public <T extends MoFragment> void loadFragment(T fragment) {
         loadFragment(fragment, true);
     }
 

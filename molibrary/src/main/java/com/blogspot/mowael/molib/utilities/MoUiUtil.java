@@ -6,6 +6,7 @@ import android.support.annotation.ColorRes;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 /**
@@ -33,6 +34,19 @@ public class MoUiUtil {
             throw new RuntimeException("you have to setContext after the initialization for the first time of the instance");
         }
         return false;
+    }
+
+
+    /**
+     * @param context
+     * @param items   array of strings
+     * @return arrayAdapter of a spinner with a simple spinner item as a layout for a given array of strings
+     */
+    public ArrayAdapter<String> getArrayAdapter(Context context, String[] items) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, items);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        return adapter;
+
     }
 
     /**

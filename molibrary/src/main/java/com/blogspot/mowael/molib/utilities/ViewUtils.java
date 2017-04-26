@@ -8,13 +8,16 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.text.InputFilter;
+import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.ImageSpan;
 import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -46,10 +49,9 @@ public class ViewUtils {
     }
 
 
-
     /**
      * @param context
-     * @return  LayoutInflater from the provided context
+     * @return LayoutInflater from the provided context
      */
     public static LayoutInflater getLayoutInflater(Context context) {
         return (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -79,6 +81,24 @@ public class ViewUtils {
         return string;
     }
 
+    /**
+     * @param context
+     * @param id                of a drawable
+     * @param verticalAlignment eg. ImageSpan.ALIGN_BOTTOM
+     * @param str
+     * @param fontSize          font size in dp
+     * @param color
+     * @return SpannableString sb
+     */
+    public static SpannableString makeSpanWithImage(Context context, @DrawableRes int id, int verticalAlignment, String str, int fontSize, @ColorInt int color) {
+        Drawable image = getDrawable(context, id);
+        image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
+        SpannableString sb = makeSpan(str, fontSize, color);
+        ImageSpan imageSpan = new ImageSpan(image, verticalAlignment);
+        sb.setSpan(imageSpan, 0, sb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return sb;
+    }
+
     public static void startActivity(Context context, Class<? extends Activity> aClass, boolean finish) {
         startActivity(context, aClass, null, finish);
     }
@@ -105,7 +125,7 @@ public class ViewUtils {
         return context.getString(id);
     }
 
-    public static Drawable getDrawable(Context context, int id) {
+    public static Drawable getDrawable(Context context, @DrawableRes int id) {
         return ContextCompat.getDrawable(context, id);
     }
 

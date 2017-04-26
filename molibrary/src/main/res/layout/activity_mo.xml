@@ -6,10 +6,18 @@
     android:layout_height="match_parent"
     tools:context="com.blogspot.mowael.molib.activities.MoActivity">
 
+    <include
+        android:id="@+id/iToolbar"
+        layout="@layout/toolbar_layout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize" />
+
     <FrameLayout
         android:id="@+id/flFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/iToolbar" />
 
     <TextView
         android:id="@+id/tvMoActivityDescription"
