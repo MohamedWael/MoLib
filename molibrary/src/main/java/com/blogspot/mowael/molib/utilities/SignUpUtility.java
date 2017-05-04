@@ -6,6 +6,7 @@ package com.blogspot.mowael.molib.utilities;
 public class SignUpUtility {
 
     private static SignUpUtility newInstance;
+    private static OnCredentialsVerification onCredentialsVerification;
     private String userName, email, password, status;
     private final static String REGEX_Mail = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
 
@@ -23,16 +24,24 @@ public class SignUpUtility {
                             return newInstance;
                         }
                     } else {
-                        nullPointerEx(email + " is not valid email");
+//                        nullPointerEx(email + " is not valid email");
+                        if (onCredentialsVerification != null)
+                            onCredentialsVerification.onWrongEmail(email + " is not valid email");
                     }
                 } else {
-                    nullPointerEx("password is empty");
+//                    nullPointerEx("password is empty");
+                    if (onCredentialsVerification != null)
+                        onCredentialsVerification.onWrongPassword("password is empty");
                 }
             } else {
-                nullPointerEx("email is empty");
+//                nullPointerEx("email is empty");
+                if (onCredentialsVerification != null)
+                    onCredentialsVerification.onWrongEmail("email is empty");
             }
         } else {
-            nullPointerEx("userName is empty");
+//            nullPointerEx("userName is empty");
+            if (onCredentialsVerification != null)
+                onCredentialsVerification.onWrongUserName("userName is empty");
         }
 
         Logger.d("newInstance", "old");
@@ -55,6 +64,10 @@ public class SignUpUtility {
     }
 
 
+    public void setOnCredentialsVerification(OnCredentialsVerification onCredentialsVerification) {
+        this.onCredentialsVerification = onCredentialsVerification;
+    }
+
     public static SignUpUtility getCurrentInstance() {
         return newInstance;
     }
@@ -69,5 +82,14 @@ public class SignUpUtility {
 
     public String getPassword() {
         return password;
+    }
+
+
+    public interface OnCredentialsVerification {
+        void onWrongUserName(String msg);
+
+        void onWrongEmail(String msg);
+
+        void onWrongPassword(String msg);
     }
 }

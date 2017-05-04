@@ -8,7 +8,8 @@ import android.util.Log;
 
 public class Logger {
 
-    private Logger() {
+    private Logger() throws InstantiationException {
+        throw new InstantiationException("This class is not for instantiation");
     }
 
     public static void d(String tag, String message) {

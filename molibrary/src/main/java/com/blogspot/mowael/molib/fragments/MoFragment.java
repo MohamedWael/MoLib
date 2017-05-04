@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.blogspot.mowael.molib.R;
 import com.blogspot.mowael.molib.presenter.MoMVP;
+import com.blogspot.mowael.molib.presenter.MoPresenter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,7 +26,7 @@ import com.blogspot.mowael.molib.presenter.MoMVP;
  * Use the {@link MoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MoFragment extends Fragment implements MoMVP.MoView {
+public class MoFragment extends Fragment implements MoMVP.MoView{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -36,6 +38,7 @@ public class MoFragment extends Fragment implements MoMVP.MoView {
 
     private OnFragmentInteractionListener mListener;
     private FragmentManager fragmentManager;
+    private MoMVP.MoPresenter presenter;
 
     public MoFragment() {
         // Required empty public constructor
@@ -66,6 +69,7 @@ public class MoFragment extends Fragment implements MoMVP.MoView {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        presenter = new MoPresenter(this);
     }
 
     @Override
@@ -73,6 +77,19 @@ public class MoFragment extends Fragment implements MoMVP.MoView {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_mo, container, false);
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+//        presenter.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        presenter.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     public void startActivity(Class<? extends Activity> aClass) {
@@ -131,6 +148,10 @@ public class MoFragment extends Fragment implements MoMVP.MoView {
     }
 
 
+    public void setHasOptionsMenu(boolean hasOptionsMenu){
+        super.setHasOptionsMenu(hasOptionsMenu);
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -152,6 +173,11 @@ public class MoFragment extends Fragment implements MoMVP.MoView {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public MoFragment getFragment() {
+        return this;
     }
 
     /**

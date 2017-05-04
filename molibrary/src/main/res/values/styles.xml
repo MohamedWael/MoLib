@@ -1,18 +1,18 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="MoAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/moColorPrimary</item>
-        <item name="colorPrimaryDark">@color/moColorPrimaryDark</item>
-        <item name="colorAccent">@color/moColorAccent</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/ColorPrimary</item>
+        <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
+        <item name="colorAccent">@color/ColorAccent</item>
         <item name="android:textAllCaps">false</item>
     </style>
 
     <!--<style name="ImageCroper" parent="Base.Theme.AppCompat">-->
     <style name="MoImageCropper" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/moColorPrimary</item>
-        <item name="colorPrimaryDark">@color/moColorPrimaryDark</item>
-        <item name="colorAccent">@color/moColorAccent</item>
+        <item name="colorPrimary">@color/ColorPrimary</item>
+        <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
+        <item name="colorAccent">@color/ColorAccent</item>
         <item name="android:textAllCaps">false</item>
     </style>
 

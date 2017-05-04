@@ -57,6 +57,9 @@ public class MaterialEditText extends LinearLayout {
 
     private void setAttributeSet(Context context, AttributeSet attrs) {
         TypedArray styleAttributes = context.obtainStyledAttributes(attrs, R.styleable.MaterialEditText);
+
+
+        styleAttributes.recycle();
     }
 
     public EditText getEditText() {

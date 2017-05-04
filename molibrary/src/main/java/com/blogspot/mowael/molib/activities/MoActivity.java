@@ -1,5 +1,6 @@
 package com.blogspot.mowael.molib.activities;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,8 +19,16 @@ import com.blogspot.mowael.molib.R;
 import com.blogspot.mowael.molib.fragments.MoFragment;
 
 public class MoActivity extends AppCompatActivity {
-
+    /*
+    TODO consider adding ActionBarDrawerToggle (The Hamburger Button) in the tool bar
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
+    * */
     private FragmentManager fragmentManager;
+    private MoFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +44,13 @@ public class MoActivity extends AppCompatActivity {
             findViewById(R.id.tvMoActivityDescription).setVisibility(View.GONE);
             container.addView(inflater.inflate(layoutRes, null));
         }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (fragment != null) fragment.onActivityResult(requestCode, resultCode, data);
     }
 
     /**
@@ -59,6 +75,7 @@ public class MoActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
     }
+
 
     public Toolbar enableToolbar(@IdRes int id) {
         Toolbar toolbar = setToolbarLayout(id);
@@ -131,13 +148,17 @@ public class MoActivity extends AppCompatActivity {
         }
     }
 
+    public MoFragment getCurrentFragment() {
+        return fragment;
+    }
 
     public <T extends MoFragment> void loadFragment(T fragment, @IdRes int in, String tag, boolean isAddToBackStack) {
+        this.fragment = fragment;
         if (fragmentManager == null) {
             fragmentManager = getSupportFragmentManager();
         }
         if (isAddToBackStack)
-            fragmentManager.beginTransaction().addToBackStack(null).replace(in, fragment, tag).commit();
+            fragmentManager.beginTransaction().addToBackStack(tag).replace(in, fragment, tag).commit();
         else fragmentManager.beginTransaction().replace(in, fragment, tag).commit();
     }
 

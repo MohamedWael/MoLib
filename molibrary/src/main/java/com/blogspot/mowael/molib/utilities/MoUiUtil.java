@@ -1,10 +1,12 @@
 package com.blogspot.mowael.molib.utilities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorRes;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -36,6 +38,27 @@ public class MoUiUtil {
         return false;
     }
 
+    public DisplayMetrics getDisplayMetrics(Activity activity) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics;
+    }
+
+    public int[] getWindowMetrics(Activity activity) {
+        int height = getDisplayMetrics(activity).heightPixels;
+        int width = getDisplayMetrics(activity).widthPixels;
+        return new int[]{width, height};
+    }
+
+
+    public int getWindowWidth(Activity activity) {
+        return getWindowMetrics(activity)[0];
+    }
+
+    public int getWindowHeight(Activity activity) {
+        return getWindowMetrics(activity)[1];
+    }
+
 
     /**
      * @param context
@@ -45,6 +68,18 @@ public class MoUiUtil {
     public ArrayAdapter<String> getArrayAdapter(Context context, String[] items) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        return adapter;
+
+    }
+
+    /**
+     * @param context
+     * @param items   array of strings
+     * @return arrayAdapter of a ListView with a simple list item as a layout for a given array of strings
+     */
+    public ArrayAdapter<String> getArrayListAdapter(Context context, String[] items) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, items);
+        adapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
         return adapter;
 
     }

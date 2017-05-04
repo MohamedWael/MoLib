@@ -25,18 +25,18 @@ public class Service implements NetworkStateReceiver.NetworkStateReceiverListene
     public static final String _METHOD_POST = "POST";
     public static final String _METHOD_PATCH = "PATCH";
     public static final String _METHOD_DESTROY = "DESTROY";
-    private final VolleyClient volley;
-    private final Context mContext;
+    private final int TRYING_LIMIT = 9;
+    private VolleyClient volley;
+    private Context mContext;
     private ArrayList<ServiceRequest> requests;
     private ServiceRequest request;
     private int numberOfRetryingToGetResponse = 0;
-    private final int TRYING_LIMIT = 9;
 
 
-    public static Service getInstance(Context mContext) {
+    public static Service getInstance() {
         if (ourInstance == null) {
             Logger.d("Service", "new Service");
-            ourInstance = new Service(mContext);
+            ourInstance = new Service();
             return ourInstance;
         } else {
             Logger.d("Service", "old Service");
@@ -44,8 +44,19 @@ public class Service implements NetworkStateReceiver.NetworkStateReceiverListene
         }
     }
 
-    private Service(Context mContext) {
+    private Service() {
+    }
+
+    public void setContextAndInitService(Context mContext) {
+        setContext(mContext);
+        initService();
+    }
+
+    public void setContext(Context mContext) {
         this.mContext = mContext;
+    }
+
+    public void initService() {
         volley = VolleyClient.getInstance(mContext);
         NetworkStateReceiver receiver = NetworkStateReceiver.getInstance();
         mContext.registerReceiver(receiver, receiver.getIntentFilter());

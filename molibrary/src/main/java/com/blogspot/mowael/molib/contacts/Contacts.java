@@ -3,14 +3,24 @@ package com.blogspot.mowael.molib.contacts;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v7.app.AppCompatActivity;
 
+import com.blogspot.mowael.molib.contacts.contactsPOJO.ContactInfo;
 import com.blogspot.mowael.molib.utilities.Logger;
 import com.blogspot.mowael.molib.utilities.MoConstants;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
+
+import java.util.ArrayList;
 
 /**
  * Created by moham on 2/17/2017.
@@ -28,9 +38,10 @@ public class Contacts {
     public static final String ID = "id";
     public static final String NAME = "name";
     public static final String EMAIL = "email";
+    public static final String PHOTO_URI = "PHOTO_URI";
 
 
-    public Contacts(Context mContext, LoadListener loadListener) {
+    private Contacts(Context mContext, LoadListener loadListener) {
         this.mContext = mContext;
         this.loadListener = loadListener;
     }
@@ -40,7 +51,110 @@ public class Contacts {
     }
 
 
-    public void readContacts() {
+    public Contacts() {
+    }
+
+
+    public void execute(AppCompatActivity activity, LoaderManager.LoaderCallbacks<Cursor> contactsLoader) {
+        activity.getSupportLoaderManager().initLoader(999, new Bundle(), contactsLoader);
+    }
+
+
+    public JSONArray getProviderContacts(final AppCompatActivity activity, final LoadInfoListener loadListener) {
+        contacts = new JSONArray();
+        LoaderManager.LoaderCallbacks<Cursor> contactsLoader = new LoaderManager.LoaderCallbacks<Cursor>() {
+            @Override
+            public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+//                ContentResolver contentResolver = activity.getContentResolver();
+//                Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+
+//                Cursor managedCursor = getContentResolver()
+//                        .query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+//                                new String[] {Phone._ID, Phone.DISPLAY_NAME, Phone.NUMBER},
+//                                null, null,  Phone.DISPLAY_NAME + " ASC");
+
+                // Define the columns to retrieve
+                String[] projectionFields = new String[]{ContactsContract.Contacts._ID,
+                        ContactsContract.Contacts.DISPLAY_NAME,
+                        ContactsContract.Contacts.HAS_PHONE_NUMBER,
+                        ContactsContract.Contacts.PHOTO_URI,
+                        ContactsContract.Contacts.PHOTO_THUMBNAIL_URI};
+                // Construct the loader
+                CursorLoader cursorLoader = new CursorLoader(activity,
+                        ContactsContract.Contacts.CONTENT_URI, // URI
+//                        projectionFields, // projection fields
+                        null,
+                        null, // the selection criteria
+                        null, // the selection args
+                        null // the sort order
+                );
+                // Return the loader for use
+                return cursorLoader;
+            }
+
+            @Override
+            public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+                try {
+                    ArrayList<ContactInfo> contactsInfo = new ArrayList<>();
+                    Gson gson = new Gson();
+                    contacts = new JSONArray();
+                    Logger.d("dataCount", data.getCount() + "  dataCount");
+                    for (String x : data.getColumnNames()) {
+                        Logger.d("getColumnName", x);
+                    }
+                    if (data.getCount() > 0) {
+                        while (data.moveToNext()) {
+                            contact = new JSONObject();
+                            String id = data.getString(data.getColumnIndex(ContactsContract.Contacts._ID));
+                            String name = data.getString(data.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                            String photoUri = data.getString(data.getColumnIndex(ContactsContract.Contacts.PHOTO_URI));
+                            if (Integer.parseInt(data.getString(data.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
+                                Logger.d("Contact", "name : " + name + ", ID : " + id);
+
+
+                                contact.put(ID, id);
+                                contact.put(NAME, name);
+                                contact.put(PHOTO_URI, photoUri);
+
+
+                                JSONArray phoneNumbers = new JSONArray();
+
+                                // get the phone number
+//                                Cursor phoneNumberCursor = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{id}, null);
+//                                while (phoneNumberCursor.moveToNext()) {
+//                                    JSONObject phoneNumberObject = new JSONObject();
+//                                    String phoneNumber = phoneNumberCursor.getString(phoneNumberCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+//                                    Logger.d("phone", "number : " + phoneNumber);
+//                                    phoneNumbers.put(phoneNumber);
+//                                }
+//                                contact.put("phoneNumbers", phoneNumbers);
+//                                phoneNumberCursor.close();
+
+                            }
+                            Logger.d("oneContact", contact.toString());
+                            ContactInfo info = gson.fromJson(contact.toString(), ContactInfo.class);
+                            contactsInfo.add(info);
+                            loadListener.getContacts(info);
+                            contacts.put(contact);
+                        }
+                        loadListener.onLoadComplete(contactsInfo);
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onLoaderReset(Loader<Cursor> loader) {
+
+            }
+        };
+        activity.getSupportLoaderManager().initLoader(999, new Bundle(), contactsLoader);
+        return contacts;
+    }
+
+    private void readContacts() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -394,4 +508,22 @@ public class Contacts {
          */
         void getContacts(JSONObject contact);
     }
+
+
+    public interface LoadInfoListener {
+        /**
+         * get a full list of contacts
+         *
+         * @param contacts
+         */
+        void onLoadComplete(ArrayList<ContactInfo> contacts);
+
+        /**
+         * get the loaded contact
+         *
+         * @param contact
+         */
+        void getContacts(ContactInfo contact);
+    }
+
 }
