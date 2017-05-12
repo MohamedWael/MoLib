@@ -1,4 +1,4 @@
-package com.blogspot.mowael.molib.network;
+package com.blogspot.mowael.molib.utilities;
 
 import android.Manifest;
 import android.app.Activity;
@@ -65,13 +65,10 @@ public class ImageCropperUtil {
 
     public static void startPickImageActivity(Activity activity) {
 //        CropImage.startPickImageActivity(activity);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (CropImage.isExplicitCameraPermissionRequired(activity)) {
+        if (CropImage.isExplicitCameraPermissionRequired(activity)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 activity.requestPermissions(new String[]{Manifest.permission.CAMERA}, CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE);
-
-            } else {
-                CropImage.startPickImageActivity(activity);
-            }
+            } else CropImage.startPickImageActivity(activity);
         } else {
             CropImage.startPickImageActivity(activity);
         }

@@ -13,22 +13,22 @@ public class Logger {
     }
 
     public static void d(String tag, String message) {
-        if (MoConstants.LOG_TOGGLE)
+        if (MoConfig.LOG_TOGGLE)
             Log.d(tag, message);
     }
 
     public static void e(String tag, String message) {
-        if (MoConstants.LOG_TOGGLE)
+        if (MoConfig.LOG_TOGGLE)
             Log.e(tag, message);
     }
 
     public static void i(String tag, String message) {
-        if (MoConstants.LOG_TOGGLE)
+        if (MoConfig.LOG_TOGGLE)
             Log.i(tag, message);
     }
 
     public static void w(String tag, String message) {
-        if (MoConstants.LOG_TOGGLE)
+        if (MoConfig.LOG_TOGGLE)
             Log.w(tag, message);
     }
 

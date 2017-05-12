@@ -4,7 +4,7 @@ package com.blogspot.mowael.molib.network;
  * Created by moham on 2/6/2017.
  */
 
-public class CommonHTTPError {
+public class CommonHTTPCode {
 
     public static final int HTTP_CODE_SOMETHING_WRONG = 100;
     public static final int HTTP_CODE_AUTH_FAILED = 103;
@@ -15,11 +15,12 @@ public class CommonHTTPError {
     public static final int HTTP_CODE_NOT_FOUND = 404; //something not found like an ad
     public static final int HTTP_CODE_WRONG_PHONE_NUMBER = 405;
     public static final int HTTP_CODE_WRONG_FORGET_PASS_VERIFY_NUMBER = 406;
+    public static final int HTTP_CODE_CONFLICT = 409;
     public static final int HTTP_CODE_WAIT_BEFORE_RESEND = 410;
     public static final int HTTP_CODE_DO_NOT_HAVE_PERMISSION = 412;
     private String errorMsg;
 
-    public CommonHTTPError(int errorCode) {
+    public CommonHTTPCode(int errorCode) {
         switch (errorCode) {
             case HTTP_CODE_SUCCESS:
                 errorMsg = "CODE_SUCCESS".replace("_", " ").toLowerCase();

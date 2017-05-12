@@ -6,6 +6,10 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.blogspot.mowael.molib.fragments.MoFragment;
+import com.blogspot.mowael.molib.network.Service;
+import com.blogspot.mowael.molib.network.pojo.GeneralResponse;
+
+import org.json.JSONObject;
 
 /**
  * Created by moham on 4/26/2017.
@@ -21,7 +25,7 @@ public interface MoMVP {
 
         MoFragment getFragment();
 
-//        void updateUIOnNetworkUnavailable(String noInternetMessage);
+//        void onNetworkUnavailable(String noInternetMessage);
     }
 
     interface MoPresenter {
@@ -35,6 +39,17 @@ public interface MoMVP {
     }
 
     interface MoBusiness {
+        void executeGET(String url, JSONObject body, Service.ServiceResponseListener serviceResponse) throws Exception;
+
+        <T extends GeneralResponse> void executeGETForType(Class<T> typeResponse, String url, JSONObject body, Service.ServiceResponseListener serviceResponse) throws Exception;
+
+        void executePOST(String url, JSONObject body, Service.ServiceResponseListener serviceResponse) throws Exception;
+
+        <T extends GeneralResponse> void executePOSTForType(Class<T> typeResponse, String url, JSONObject body, Service.ServiceResponseListener serviceResponse) throws Exception;
+    }
+
+    interface MoBusinessWithService extends Service.ServiceResponseListener {
 
     }
+
 }

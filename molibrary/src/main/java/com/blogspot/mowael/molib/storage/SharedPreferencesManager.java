@@ -3,7 +3,7 @@ package com.blogspot.mowael.molib.storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.blogspot.mowael.molib.utilities.MoConstants;
+import com.blogspot.mowael.molib.utilities.MoConfig;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -12,30 +12,50 @@ import static android.content.Context.MODE_PRIVATE;
  */
 public class SharedPreferencesManager {
     private static SharedPreferencesManager ourInstance;
-    private final Context mContext;
+    private Context mContext;
     private SharedPreferences.Editor editor;
     private SharedPreferences prefs;
 
-    public static SharedPreferencesManager getInstance(Context mContext) {
-        if (ourInstance == null) ourInstance = new SharedPreferencesManager(mContext);
+    public static SharedPreferencesManager getInstance() {
+        if (ourInstance == null) ourInstance = new SharedPreferencesManager();
         return ourInstance;
     }
 
-    private SharedPreferencesManager(Context mContext) {
-        this.mContext = mContext;
-        initSharedPreferences();
+    private SharedPreferencesManager() {
     }
 
 
+    public SharedPreferencesManager setContext(Context mContext) {
+        this.mContext = mContext;
+        return this;
+    }
+
+    private Context getContext() {
+        if (mContext == null) {
+            throw new RuntimeException("you must setContext() in order to initialize Shared Prereference");
+        }
+        return mContext;
+    }
+
+    public SharedPreferences initSharedPreferences(Context mContext) {
+        setContext(mContext);
+        return prefs = getContext().getSharedPreferences(MoConfig.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+    }
+
     public SharedPreferences initSharedPreferences() {
-        return prefs = mContext.getSharedPreferences(MoConstants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+        return initSharedPreferences(getContext());
+    }
+
+    public SharedPreferences.Editor initEditor(Context mContext) {
+        setContext(mContext);
+        if (prefs == null) {
+            initSharedPreferences(mContext);
+        }
+        return editor = prefs.edit();
     }
 
     public SharedPreferences.Editor initEditor() {
-        if (prefs == null) {
-            initSharedPreferences();
-        }
-        return editor = prefs.edit();
+        return initEditor(getContext());
     }
 
     /**

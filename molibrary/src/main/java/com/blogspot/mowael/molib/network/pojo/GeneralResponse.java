@@ -1,21 +1,20 @@
 package com.blogspot.mowael.molib.network.pojo;
 
-import com.blogspot.mowael.molib.network.CommonHTTPError;
-import com.blogspot.mowael.molib.utilities.MoConstants;
+import com.blogspot.mowael.molib.network.CommonHTTPCode;
 
 /**
  * Created by moham on 4/14/2017.
  */
 
 public class GeneralResponse {
-    private String message;
-    private int code;
+    protected String message;
+    protected int code;
 
     public GeneralResponse() {
     }
 
     public boolean isSuccess() {
-        if (code == CommonHTTPError.HTTP_CODE_SUCCESS) return true;
+        if (code == CommonHTTPCode.HTTP_CODE_SUCCESS) return true;
         return false;
     }
 

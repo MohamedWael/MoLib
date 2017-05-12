@@ -12,13 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.blogspot.mowael.molib.contacts.contactsPOJO.ContactInfo;
 import com.blogspot.mowael.molib.utilities.Logger;
-import com.blogspot.mowael.molib.utilities.MoConstants;
+import com.blogspot.mowael.molib.utilities.MoConfig;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import android.provider.ContactsContract.CommonDataKinds.Phone;
 
 import java.util.ArrayList;
 
@@ -47,7 +46,7 @@ public class Contacts {
     }
 
     private boolean checkEmail(String name) {
-        return name.matches(MoConstants.REGEX_Mail);
+        return name.matches(MoConfig.REGEX_Mail);
     }
 
 

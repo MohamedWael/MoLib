@@ -84,7 +84,7 @@ public class VolleyClient {
     }
 
 
-     public static void openEmailClient(Context mContext, /*String mailto,*/ String mail, String subject, String msg) {
+    public static void openEmailClient(Context mContext, /*String mailto,*/ String mail, String subject, String msg) {
         Intent mailIntent = new Intent(Intent.ACTION_SEND, Uri.parse("mailto:" + mail));
         mailIntent.setType("text/html");
         mailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail});
@@ -96,8 +96,8 @@ public class VolleyClient {
             Toast.makeText(mContext, "No email clients installed.", Toast.LENGTH_SHORT).show();
         }
     }
-	
-	  public static boolean isValidEmail(CharSequence target) {
+
+    public static boolean isValidEmail(CharSequence target) {
         if (target == null) {
             return false;
         } else {

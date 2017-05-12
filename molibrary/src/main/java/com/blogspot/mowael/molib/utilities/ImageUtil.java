@@ -1,4 +1,4 @@
-package com.blogspot.mowael.molib.network;
+package com.blogspot.mowael.molib.utilities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,6 +16,7 @@ import android.util.Base64;
 import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * Created by mohamed wael on 4/7/2017.
@@ -149,10 +150,13 @@ public class ImageUtil {
         return bitmap;
     }
 
+    public static Bitmap getBitmapFromURI(Context context, Uri imageUri) throws IOException {
+        return MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
+    }
+
     public static Bitmap decodeResource(Context context, int resId) {
         return BitmapFactory.decodeResource(context.getResources(), resId);
     }
-
 
     public Bitmap handleResultFromChooser(Intent onActivityResultIntent, Context mContext) {
 

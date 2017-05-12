@@ -7,17 +7,16 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.blogspot.mowael.molib.R;
 import com.blogspot.mowael.molib.utilities.Logger;
-import com.blogspot.mowael.molib.utilities.MoConstants;
+import com.blogspot.mowael.molib.utilities.MoConfig;
 
 public class MoSplashScreenActivity extends MoActivity implements SplashScreenSettings {
 
     private SplashScreenSettings settings;
-    private final String SPLASH_SCREEN_SETTINGS = "SplashScreenSettings";
+    private final String SPLASH_SCREEN_SETTINGS = SplashScreenSettings.class.getSimpleName();// "SplashScreenSettings";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         makeFullScreen(true);
         if (settings != null) Logger.d(SPLASH_SCREEN_SETTINGS, "Override");
         else Logger.d(SPLASH_SCREEN_SETTINGS, "Default");
@@ -46,7 +45,7 @@ public class MoSplashScreenActivity extends MoActivity implements SplashScreenSe
 
     @Override
     public int getSplashScreenTimeOut() {
-        return MoConstants.SPLASH_TIME_OUT;
+        return MoConfig.SPLASH_TIME_OUT;
     }
 
     @Override

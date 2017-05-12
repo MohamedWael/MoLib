@@ -4,13 +4,17 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 
+import com.blogspot.mowael.molib.network.Service;
+import com.blogspot.mowael.molib.network.pojo.GeneralResponse;
 import com.blogspot.mowael.molib.utilities.Logger;
+
+import org.json.JSONObject;
 
 /**
  * Created by moham on 4/26/2017.
  */
 
-public class MoPresenter implements MoMVP.MoPresenter {
+public class MoPresenter implements MoMVP.MoPresenter, Service.ServiceResponseListener {
 
     private MoMVP.MoView view;
 
@@ -56,4 +60,18 @@ public class MoPresenter implements MoMVP.MoPresenter {
     }
 
 
+    @Override
+    public <T extends GeneralResponse> void onResponseSuccess(T response) {
+
+    }
+
+    @Override
+    public void onResponse(JSONObject response, int responseCode) {
+
+    }
+
+    @Override
+    public void onNetworkUnavailable(String noInternetMessage) {
+
+    }
 }

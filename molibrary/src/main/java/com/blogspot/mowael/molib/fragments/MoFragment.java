@@ -3,13 +3,17 @@ package com.blogspot.mowael.molib.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +21,8 @@ import android.view.ViewGroup;
 import com.blogspot.mowael.molib.R;
 import com.blogspot.mowael.molib.presenter.MoMVP;
 import com.blogspot.mowael.molib.presenter.MoPresenter;
+
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,7 +32,7 @@ import com.blogspot.mowael.molib.presenter.MoPresenter;
  * Use the {@link MoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MoFragment extends Fragment implements MoMVP.MoView{
+public class MoFragment extends Fragment implements MoMVP.MoView {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -135,6 +141,13 @@ public class MoFragment extends Fragment implements MoMVP.MoView{
         loadFragment(fragment, in, fragment.getClass().getSimpleName(), isAddToBackStack);
     }
 
+    /**
+     * load fragment in the provided layout and add it to the backStack
+     *
+     * @param fragment
+     * @param in
+     * @param <T>
+     */
     public <T extends MoFragment> void loadFragment(T fragment, @IdRes int in) {
         loadFragment(fragment, in, true);
     }
@@ -143,14 +156,43 @@ public class MoFragment extends Fragment implements MoMVP.MoView{
         loadFragment(fragment, R.id.flFragment, isAddToBackStack);
     }
 
+    /**
+     * it adds the fragment to backStack by default.
+     *
+     * @param fragment
+     * @param <T>
+     */
     public <T extends MoFragment> void loadFragment(T fragment) {
         loadFragment(fragment, true);
     }
 
 
-    public void setHasOptionsMenu(boolean hasOptionsMenu){
+    public void setHasOptionsMenu(boolean hasOptionsMenu) {
         super.setHasOptionsMenu(hasOptionsMenu);
     }
+
+    /**
+     * @param lang e.g. (en|ar)
+     */
+    public void setLocale(String lang) {
+        Locale myLocale = new Locale(lang);
+        Resources res = getContext().getApplicationContext().getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration config = res.getConfiguration();
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            config.locale = myLocale;
+        } else {
+            config.setLocale(myLocale);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            getContext().createConfigurationContext(config);
+            return;
+        }
+        getContext().getApplicationContext().getResources().updateConfiguration(config, dm);
+        res.updateConfiguration(config, dm);
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
