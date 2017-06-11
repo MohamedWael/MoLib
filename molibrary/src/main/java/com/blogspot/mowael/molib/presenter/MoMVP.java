@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 
 import com.blogspot.mowael.molib.fragments.MoFragment;
 import com.blogspot.mowael.molib.network.Service;
+import com.blogspot.mowael.molib.network.listeners.OnServiceLoading;
 import com.blogspot.mowael.molib.network.pojo.GeneralResponse;
 
 import org.json.JSONObject;
@@ -36,6 +37,8 @@ public interface MoMVP {
         void onPermissionDenied(int requestCode);
 
         void onActivityResult(int requestCode, int resultCode, Intent data);
+
+        MoMVP.MoBusiness getService();
     }
 
     interface MoBusiness {
@@ -46,6 +49,8 @@ public interface MoMVP {
         void executePOST(String url, JSONObject body, Service.ServiceResponseListener serviceResponse) throws Exception;
 
         <T extends GeneralResponse> void executePOSTForType(Class<T> typeResponse, String url, JSONObject body, Service.ServiceResponseListener serviceResponse) throws Exception;
+
+        void setOnServiceLoadingListener(OnServiceLoading onServiceLoading);
     }
 
     interface MoBusinessWithService extends Service.ServiceResponseListener {

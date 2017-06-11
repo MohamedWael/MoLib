@@ -91,6 +91,24 @@ public class UserUtil implements IUserUtil {
         }
     }
 
+    public void setTempUser(String userName, String email, String apiToken, String firebaseToken) {
+        if (manager != null) {
+            if (notEmpty(userName) && notEmpty(email) && notEmpty(apiToken) && notEmpty(firebaseToken))
+                putString(USER_NAME, userName).putString(EMAIL, email).putString(FIREBASE_TOKEN, firebaseToken)
+                        .putString(API_TOKEN, apiToken).putBoolean(HAVE_ACCOUNT, false).apply();
+            else throw new RuntimeException("userName and email mustn't be empty or null");
+        }
+    }
+
+    public void setTempUser(String userName, String email, String apiToken) {
+        if (manager != null) {
+            if (notEmpty(userName) && notEmpty(email) && notEmpty(apiToken))
+                putString(USER_NAME, userName).putString(EMAIL, email)
+                        .putString(API_TOKEN, apiToken).putBoolean(HAVE_ACCOUNT, false).apply();
+            else throw new RuntimeException("userName and email mustn't be empty or null");
+        }
+    }
+
     private SharedPreferences.Editor putString(String key, String value) {
         return manager.getEditor().putString(key, value);
     }
@@ -103,12 +121,20 @@ public class UserUtil implements IUserUtil {
         return manager.getEditor().putLong(key, value);
     }
 
+    public SharedPreferences.Editor addMoreDetails(String key, boolean value) {
+        return manager.getEditor().putBoolean(key, value);
+    }
+
     public String getSomeDetails(String key, String defValue) {
         return manager.getPrefs().getString(key, defValue);
     }
 
     public long getSomeDetails(String key, long defValue) {
         return manager.getPrefs().getLong(key, defValue);
+    }
+
+    public boolean getSomeDetails(String key, boolean defValue) {
+        return manager.getPrefs().getBoolean(key, defValue);
     }
 
     private boolean notEmpty(String s) {

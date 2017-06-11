@@ -6,7 +6,7 @@ import android.util.Log;
  * Created by moham on 1/23/2017.
  */
 
-public class Logger {
+public final class Logger {
 
     private Logger() throws InstantiationException {
         throw new InstantiationException("This class is not for instantiation");
@@ -14,22 +14,22 @@ public class Logger {
 
     public static void d(String tag, String message) {
         if (MoConfig.LOG_TOGGLE)
-            Log.d(tag, message);
+            Log.d(tag, getMsg(message));
     }
 
     public static void e(String tag, String message) {
         if (MoConfig.LOG_TOGGLE)
-            Log.e(tag, message);
+            Log.e(tag, getMsg(message));
     }
 
     public static void i(String tag, String message) {
         if (MoConfig.LOG_TOGGLE)
-            Log.i(tag, message);
+            Log.i(tag, getMsg(message));
     }
 
     public static void w(String tag, String message) {
         if (MoConfig.LOG_TOGGLE)
-            Log.w(tag, message);
+            Log.w(tag, getMsg(message));
     }
 
     public static void d(String message) {
@@ -54,5 +54,10 @@ public class Logger {
         String className = relevantTrace.getClassName();
         int lastIndex = className.lastIndexOf('.');
         return className.substring(lastIndex + 1);
+    }
+
+    private static String getMsg(String msg) {
+        if (msg != null) return msg;
+        else return "the message you entered is empty or null";
     }
 }

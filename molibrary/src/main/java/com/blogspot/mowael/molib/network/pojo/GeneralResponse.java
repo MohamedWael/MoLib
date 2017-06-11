@@ -1,36 +1,39 @@
 package com.blogspot.mowael.molib.network.pojo;
 
 import com.blogspot.mowael.molib.network.CommonHTTPCode;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by moham on 4/14/2017.
  */
 
 public class GeneralResponse {
-    protected String message;
-    protected int code;
+    @SerializedName("message")
+    protected String mMessage;
+    @SerializedName("code")
+    protected int mCode;
 
     public GeneralResponse() {
     }
 
     public boolean isSuccess() {
-        if (code == CommonHTTPCode.HTTP_CODE_SUCCESS) return true;
+        if (mCode == CommonHTTPCode.HTTP_CODE_SUCCESS) return true;
         return false;
     }
 
     public String getMessage() {
-        return message;
+        return mMessage;
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        this.mMessage = message;
     }
 
     public int getCode() {
-        return code;
+        return mCode;
     }
 
     public void setCode(int code) {
-        this.code = code;
+        this.mCode = code;
     }
 }

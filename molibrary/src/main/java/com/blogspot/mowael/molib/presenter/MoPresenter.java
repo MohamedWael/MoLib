@@ -1,10 +1,14 @@
 package com.blogspot.mowael.molib.presenter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 
+import com.blogspot.mowael.molib.business.MoBusiness;
 import com.blogspot.mowael.molib.network.Service;
+import com.blogspot.mowael.molib.network.listeners.OnServiceLoading;
 import com.blogspot.mowael.molib.network.pojo.GeneralResponse;
 import com.blogspot.mowael.molib.utilities.Logger;
 
@@ -14,12 +18,19 @@ import org.json.JSONObject;
  * Created by moham on 4/26/2017.
  */
 
-public class MoPresenter implements MoMVP.MoPresenter, Service.ServiceResponseListener {
+public class MoPresenter implements MoMVP.MoPresenter, Service.ServiceResponseListener, OnServiceLoading {
 
-    private MoMVP.MoView view;
+    private AlertDialog progressDialog;
+    protected MoMVP.MoView view;
+    private MoMVP.MoBusiness service;
 
     public MoPresenter(MoMVP.MoView view) {
         this.view = view;
+        getService().setOnServiceLoadingListener(this);
+    }
+
+    public void setProgressDialog(AlertDialog progressDialog) {
+        this.progressDialog = progressDialog;
     }
 
     @Override
@@ -59,6 +70,12 @@ public class MoPresenter implements MoMVP.MoPresenter, Service.ServiceResponseLi
         Logger.d("DeniedRequestCode", requestCode + "");
     }
 
+    public MoMVP.MoBusiness getService() {
+        if (service == null) {
+            service = new MoBusiness();
+        }
+        return service;
+    }
 
     @Override
     public <T extends GeneralResponse> void onResponseSuccess(T response) {
@@ -73,5 +90,15 @@ public class MoPresenter implements MoMVP.MoPresenter, Service.ServiceResponseLi
     @Override
     public void onNetworkUnavailable(String noInternetMessage) {
 
+    }
+
+    @Override
+    public void onStartLoadingDialog(Context appContext) {
+        if (progressDialog != null) progressDialog.show();
+    }
+
+    @Override
+    public void onLoadingDialogComplete() {
+        if (progressDialog != null) progressDialog.dismiss();
     }
 }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
@@ -117,6 +118,12 @@ public class ViewUtils {
             ((Activity) context).finish();
     }
 
+
+    public static Drawable setDrawableColorFilter(Context context, Drawable drawable, int colorRes) {
+        drawable.setColorFilter(getColor(context, colorRes), PorterDuff.Mode.MULTIPLY);
+        return drawable;
+    }
+
     public static int getColor(Context context, @ColorRes int id) {
         return ContextCompat.getColor(context, id);
     }
@@ -143,6 +150,10 @@ public class ViewUtils {
         Toast toast = Toast.makeText(context, msg, Toast.LENGTH_LONG);
         toast.show();
         return toast;
+    }
+
+    public static Toast toastMsg(Context context, int stringRes) {
+        return toastMsg(context, getString(context, stringRes));
     }
 
     /**

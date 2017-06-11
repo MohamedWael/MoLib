@@ -2,8 +2,8 @@ package com.blogspot.mowael.molib.business;
 
 import android.content.Context;
 
-import com.blogspot.mowael.molib.network.OnServiceLoading;
 import com.blogspot.mowael.molib.network.Service;
+import com.blogspot.mowael.molib.network.listeners.OnServiceLoading;
 import com.blogspot.mowael.molib.network.pojo.GeneralResponse;
 import com.blogspot.mowael.molib.presenter.MoMVP;
 
@@ -16,6 +16,7 @@ import org.json.JSONObject;
 public class MoBusiness implements MoMVP.MoBusiness, MoMVP.MoBusinessWithService, OnServiceLoading {
 
     private Service.ServiceResponseListener serviceResponse;
+    private OnServiceLoading onServiceLoading;
 
     public MoBusiness() {
 
@@ -64,17 +65,22 @@ public class MoBusiness implements MoMVP.MoBusiness, MoMVP.MoBusinessWithService
         if (serviceResponse != null) serviceResponse.onNetworkUnavailable(noInternetMessage);
     }
 
-    public void setOnServiceLoading(OnServiceLoading onServiceLoading) {
+    protected void setOnServiceLoading(OnServiceLoading onServiceLoading) {
         Service.getInstance().setOnServiceLoading(onServiceLoading);
     }
 
     @Override
-    public void onStartLoadingDialog(Context appContext) {
+    public void setOnServiceLoadingListener(OnServiceLoading onServiceLoading) {
+        this.onServiceLoading = onServiceLoading;
+    }
 
+    @Override
+    public void onStartLoadingDialog(Context appContext) {
+        if (onServiceLoading != null) onServiceLoading.onStartLoadingDialog(appContext);
     }
 
     @Override
     public void onLoadingDialogComplete() {
-
+        if (onServiceLoading != null) onServiceLoading.onLoadingDialogComplete();
     }
 }

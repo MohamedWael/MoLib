@@ -6,6 +6,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.blogspot.mowael.molib.R;
+import com.blogspot.mowael.molib.network.listeners.OnServiceLoading;
 import com.blogspot.mowael.molib.network.pojo.GeneralResponse;
 import com.blogspot.mowael.molib.utilities.Logger;
 import com.blogspot.mowael.molib.utilities.ViewUtils;
@@ -25,6 +26,7 @@ public class Service implements NetworkStateReceiver.NetworkStateReceiverListene
     public static final String _METHOD_POST = "POST";
     public static final String _METHOD_PATCH = "PATCH";
     public static final String _METHOD_DESTROY = "DESTROY";
+    public static final int SERVER_ERROR = -1;
     private final int TRYING_LIMIT = 2;
     private VolleyClient volley;
     private Context mContext;
@@ -63,6 +65,7 @@ public class Service implements NetworkStateReceiver.NetworkStateReceiverListene
         volley.getRequestQueue().start();
         NetworkStateReceiver receiver = NetworkStateReceiver.getInstance();
         mContext.registerReceiver(receiver, receiver.getIntentFilter());
+//        receiver.addListener(this);
         requests = new ArrayList<>();
     }
 
@@ -110,6 +113,7 @@ public class Service implements NetworkStateReceiver.NetworkStateReceiverListene
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                serviceResponse.onResponse(new JSONObject(), SERVER_ERROR);
                 if (onServiceLoading != null) onServiceLoading.onLoadingDialogComplete();
                 String volleyErrorStr = error.toString();
                 if (volleyErrorStr.contains("com.android.volley.TimeoutError") && numberOfRetryingToGetResponse <= TRYING_LIMIT) {
@@ -162,6 +166,7 @@ public class Service implements NetworkStateReceiver.NetworkStateReceiverListene
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+//                serviceResponse.onError();
                 String volleyErrorStr = error.toString();
                 if (volleyErrorStr.contains("com.android.volley.TimeoutError") && numberOfRetryingToGetResponse <= TRYING_LIMIT) {
                     Logger.e("if", volleyErrorStr);
@@ -248,6 +253,8 @@ public class Service implements NetworkStateReceiver.NetworkStateReceiverListene
         ViewUtils.toastMsg(mContext, mContext.getString(R.string.no_connection));
     }
 
+
+    //TODO remove this interface and use the ServiceResponseListener in the listener package
     public interface ServiceResponseListener {
 
         <T extends GeneralResponse> void onResponseSuccess(T response);

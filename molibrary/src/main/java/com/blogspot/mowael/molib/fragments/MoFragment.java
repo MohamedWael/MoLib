@@ -5,34 +5,33 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.blogspot.mowael.molib.R;
 import com.blogspot.mowael.molib.presenter.MoMVP;
 import com.blogspot.mowael.molib.presenter.MoPresenter;
+import com.blogspot.mowael.molib.utilities.Logger;
 
 import java.util.Locale;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MoFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class MoFragment extends Fragment implements MoMVP.MoView {
+//// TODO: 6/12/2017 Make sure to remove any allocated variable on the on destroy method
+
+public class MoFragment extends Fragment implements MoMVP.MoView, SwipeRefreshLayout.OnRefreshListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -42,9 +41,13 @@ public class MoFragment extends Fragment implements MoMVP.MoView {
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
     private FragmentManager fragmentManager;
     private MoMVP.MoPresenter presenter;
+    private View rootView;
+    private ProgressBar pbProgress;
+    private RelativeLayout rlFragmentRoot;
+    private SwipeRefreshLayout srlRoot;
+    private LinearLayout llBlockView;
 
     public MoFragment() {
         // Required empty public constructor
@@ -81,10 +84,71 @@ public class MoFragment extends Fragment implements MoMVP.MoView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_mo, container, false);
+        rootView = inflater.inflate(R.layout.fragment_mo, container, false);
+        bindViewToRootView(rootView);
+        return rootView;
     }
 
+    /**
+     * @param rootView
+     */
+    protected void bindViewToRootView(View rootView) {
+        srlRoot = (SwipeRefreshLayout) rootView.findViewById(R.id.srlRoot);
+        rlFragmentRoot = (RelativeLayout) rootView.findViewById(R.id.rlFragmentRoot);
+        pbProgress = (ProgressBar) rootView.findViewById(R.id.pbProgress);
+        llBlockView = (LinearLayout) rootView.findViewById(R.id.llBlockView);
+        setRefreshing(false);
+        srlRoot.setOnRefreshListener(this);
+        llBlockView.setVisibility(View.GONE);
+    }
+
+    public void setRefreshing(boolean refreshing) {
+        if (srlRoot != null)
+            srlRoot.setRefreshing(refreshing);
+    }
+
+    public void addBlockView(@LayoutRes int viewRes) {
+        addBlockView(LayoutInflater.from(getContext()).inflate(viewRes, null));
+    }
+
+    public void addBlockView(View view) {
+        if (llBlockView != null)
+            llBlockView.addView(view);
+    }
+
+    public void showBlockView(boolean show) {
+        if (llBlockView != null)
+            llBlockView.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    /**
+     * You have to call on super.onCreateView() in your onCreateView before inflating your View
+     *
+     * @return the root view inflated with the MoFragment
+     */
+    @Nullable
+    public View attachToRootView(View view) {
+        if (rootView == null)
+            throwMoFragmentException();
+        rlFragmentRoot.addView(view);
+        return rootView;
+    }
+
+    /**
+     * @return the root progress bar attached in the root view
+     */
+    @Nullable
+    protected ProgressBar getRootProgressBar() {
+        return pbProgress;
+    }
+
+    protected void showRootProgress(boolean show) {
+        if (getRootProgressBar() != null) {
+            getRootProgressBar().setVisibility(show ? View.VISIBLE : View.GONE);
+        } else {
+            Logger.e("getRootProgressBar()", "is null");
+        }
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -98,6 +162,11 @@ public class MoFragment extends Fragment implements MoMVP.MoView {
         presenter.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+    /**
+     * start the required Activity and finish the origin
+     *
+     * @param aClass
+     */
     public void startActivity(Class<? extends Activity> aClass) {
         startActivity(aClass, true);
     }
@@ -193,28 +262,8 @@ public class MoFragment extends Fragment implements MoMVP.MoView {
         res.updateConfiguration(config, dm);
     }
 
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-//            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    private void throwMoFragmentException() {
+        throw new RuntimeException("You have to call on super.onCreateView() in your onCreateView before inflating your View");
     }
 
     @Override
@@ -222,20 +271,11 @@ public class MoFragment extends Fragment implements MoMVP.MoView {
         return this;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    @Override
+    public void onRefresh() {
+
     }
+
 
 
 }
