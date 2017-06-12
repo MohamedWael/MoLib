@@ -8,15 +8,11 @@ import org.json.JSONObject;
  * Created by moham on 5/14/2017.
  */
 
-public interface ServiceResponseListener {
+public interface ServiceResponseListener<T extends GeneralResponse> {
 
-    <T extends GeneralResponse> void onResponseSuccess(T response);
+    void onResponseSuccess(T response);
 
     void onResponse(JSONObject response, int responseCode);
 
-    void onError();
-
     void onNetworkUnavailable(String noInternetMessage);
-
-
 }

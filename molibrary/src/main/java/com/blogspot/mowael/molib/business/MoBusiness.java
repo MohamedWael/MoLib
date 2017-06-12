@@ -1,9 +1,8 @@
 package com.blogspot.mowael.molib.business;
 
-import android.content.Context;
-
 import com.blogspot.mowael.molib.network.Service;
 import com.blogspot.mowael.molib.network.listeners.OnServiceLoading;
+import com.blogspot.mowael.molib.network.listeners.ServiceResponseListener;
 import com.blogspot.mowael.molib.network.pojo.GeneralResponse;
 import com.blogspot.mowael.molib.presenter.MoMVP;
 
@@ -13,45 +12,44 @@ import org.json.JSONObject;
  * Created by moham on 4/30/2017.
  */
 
-public class MoBusiness implements MoMVP.MoBusiness, MoMVP.MoBusinessWithService, OnServiceLoading {
+public class MoBusiness<T extends GeneralResponse> implements MoMVP.MoBusiness<T>, MoMVP.MoBusinessWithService<T>, OnServiceLoading {
 
-    private Service.ServiceResponseListener serviceResponse;
+    private ServiceResponseListener serviceResponse;
     private OnServiceLoading onServiceLoading;
 
     public MoBusiness() {
-
     }
 
     @Override
-    public void executeGET(String url, JSONObject body, Service.ServiceResponseListener serviceResponse) throws Exception {
+    public void executeGET(String url, JSONObject body, ServiceResponseListener serviceResponse) throws Exception {
         this.serviceResponse = serviceResponse;
         Service.getInstance().getResponseGET(url, body, this);
         setOnServiceLoading(this);
     }
 
     @Override
-    public <T extends GeneralResponse> void executeGETForType(Class<T> typeResponse, String url, JSONObject body, Service.ServiceResponseListener serviceResponse) throws Exception {
+    public void executeGETForType(Class<T> typeResponse, String url, JSONObject body, ServiceResponseListener serviceResponse) throws Exception {
         this.serviceResponse = serviceResponse;
         Service.getInstance().getResponseGETForType(typeResponse, url, body, this);
         setOnServiceLoading(this);
     }
 
     @Override
-    public void executePOST(String url, JSONObject body, Service.ServiceResponseListener serviceResponse) throws Exception {
+    public void executePOST(String url, JSONObject body, ServiceResponseListener serviceResponse) throws Exception {
         this.serviceResponse = serviceResponse;
         Service.getInstance().getResponsePOST(url, body, this);
         setOnServiceLoading(this);
     }
 
     @Override
-    public <T extends GeneralResponse> void executePOSTForType(Class<T> typeResponse, String url, JSONObject body, Service.ServiceResponseListener serviceResponse) throws Exception {
+    public void executePOSTForType(Class<T> typeResponse, String url, JSONObject body, ServiceResponseListener serviceResponse) throws Exception {
         this.serviceResponse = serviceResponse;
         Service.getInstance().getResponsePOSTForType(typeResponse, url, body, this);
         setOnServiceLoading(this);
     }
 
     @Override
-    public <T extends GeneralResponse> void onResponseSuccess(T response) {
+    public void onResponseSuccess(T response) {
         if (serviceResponse != null) serviceResponse.onResponseSuccess(response);
     }
 
@@ -75,8 +73,8 @@ public class MoBusiness implements MoMVP.MoBusiness, MoMVP.MoBusinessWithService
     }
 
     @Override
-    public void onStartLoadingDialog(Context appContext) {
-        if (onServiceLoading != null) onServiceLoading.onStartLoadingDialog(appContext);
+    public void onStartLoadingDialog() {
+        if (onServiceLoading != null) onServiceLoading.onStartLoadingDialog();
     }
 
     @Override

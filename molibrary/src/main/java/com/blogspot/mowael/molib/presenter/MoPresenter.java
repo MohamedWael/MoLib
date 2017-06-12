@@ -93,7 +93,7 @@ public class MoPresenter implements MoMVP.MoPresenter, Service.ServiceResponseLi
     }
 
     @Override
-    public void onStartLoadingDialog(Context appContext) {
+    public void onStartLoadingDialog() {
         if (progressDialog != null) progressDialog.show();
     }
 

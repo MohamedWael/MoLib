@@ -7,6 +7,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.blogspot.mowael.molib.R;
 import com.blogspot.mowael.molib.network.listeners.OnServiceLoading;
+import com.blogspot.mowael.molib.network.listeners.ServiceResponseListener;
 import com.blogspot.mowael.molib.network.pojo.GeneralResponse;
 import com.blogspot.mowael.molib.utilities.Logger;
 import com.blogspot.mowael.molib.utilities.ViewUtils;
@@ -70,32 +71,32 @@ public class Service implements NetworkStateReceiver.NetworkStateReceiverListene
     }
 
 
-    public void getResponsePOST(String url, JSONObject body, ServiceResponseListener serviceResponse) throws Exception, JsonSyntaxException {
+    public void getResponsePOST(String url, JSONObject body, ServiceResponseListener<GeneralResponse> serviceResponse) throws Exception, JsonSyntaxException {
         getResponseForType(GeneralResponse.class, Request.Method.POST, url, body, serviceResponse);
     }
 
-    public void getResponseGET(String url, ServiceResponseListener serviceResponse) throws Exception {
+    public void getResponseGET(String url, ServiceResponseListener<GeneralResponse> serviceResponse) throws Exception {
         getResponseForType(GeneralResponse.class, Request.Method.GET, url, new JSONObject(), serviceResponse);
     }
 
-    public void getResponseGET(String url, JSONObject body, ServiceResponseListener serviceResponse) throws Exception, JsonSyntaxException {
+    public void getResponseGET(String url, JSONObject body, ServiceResponseListener<GeneralResponse> serviceResponse) throws Exception, JsonSyntaxException {
         getResponseForType(GeneralResponse.class, Request.Method.GET, url, body, serviceResponse);
     }
 
-    public <T extends GeneralResponse> void getResponsePOSTForType(Class<T> typeResponse, String url, JSONObject body, ServiceResponseListener serviceResponse) throws Exception, JsonSyntaxException {
+    public <T extends GeneralResponse> void getResponsePOSTForType(Class<T> typeResponse, String url, JSONObject body, ServiceResponseListener<T> serviceResponse) throws Exception, JsonSyntaxException {
         getResponseForType(typeResponse, Request.Method.POST, url, body, serviceResponse);
     }
 
-    public <T extends GeneralResponse> void getResponseGETForType(Class<T> typeResponse, String url, JSONObject body, ServiceResponseListener serviceResponse) throws Exception, JsonSyntaxException {
+    public <T extends GeneralResponse> void getResponseGETForType(Class<T> typeResponse, String url, JSONObject body, ServiceResponseListener<T> serviceResponse) throws Exception, JsonSyntaxException {
         getResponseForType(typeResponse, Request.Method.GET, url, body, serviceResponse);
     }
 
-    public <T extends GeneralResponse> void getResponseGETForType(Class<T> typeResponse, String url, ServiceResponseListener serviceResponse) throws Exception {
+    public <T extends GeneralResponse> void getResponseGETForType(Class<T> typeResponse, String url, ServiceResponseListener<T> serviceResponse) throws Exception {
         getResponseForType(typeResponse, Request.Method.GET, url, new JSONObject(), serviceResponse);
     }
 
-    public <T extends GeneralResponse> void getResponseForType(final Class<T> typeResponse, final int method, final String url, final JSONObject body, final ServiceResponseListener serviceResponse) throws Exception, JsonSyntaxException {
-        if (onServiceLoading != null) onServiceLoading.onStartLoadingDialog(mContext);
+    public <T extends GeneralResponse> void getResponseForType(final Class<T> typeResponse, final int method, final String url, final JSONObject body, final ServiceResponseListener<T> serviceResponse) throws Exception, JsonSyntaxException {
+        if (onServiceLoading != null) onServiceLoading.onStartLoadingDialog();
         Logger.d("request", volley.uriEncoder(url));
         request = new ServiceRequest(method, volley.uriEncoder(url), body != null ? body : new JSONObject(), new Response.Listener<JSONObject>() {
             @Override
@@ -253,16 +254,6 @@ public class Service implements NetworkStateReceiver.NetworkStateReceiverListene
         ViewUtils.toastMsg(mContext, mContext.getString(R.string.no_connection));
     }
 
-
-    //TODO remove this interface and use the ServiceResponseListener in the listener package
-    public interface ServiceResponseListener {
-
-        <T extends GeneralResponse> void onResponseSuccess(T response);
-
-        void onResponse(JSONObject response, int responseCode);
-
-        void onNetworkUnavailable(String noInternetMessage);
-    }
 }
 
 

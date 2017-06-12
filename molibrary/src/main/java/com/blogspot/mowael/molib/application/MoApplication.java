@@ -2,7 +2,6 @@ package com.blogspot.mowael.molib.application;
 
 import android.app.Application;
 
-import com.blogspot.mowael.molib.network.IonService;
 import com.blogspot.mowael.molib.network.Service;
 import com.blogspot.mowael.molib.storage.CacheManager;
 import com.blogspot.mowael.molib.storage.SharedPreferencesManager;

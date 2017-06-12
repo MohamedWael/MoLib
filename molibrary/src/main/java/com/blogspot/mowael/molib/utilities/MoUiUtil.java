@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import java.util.List;
+
 /**
  * Created by moham on 4/20/2017.
  */
@@ -77,7 +79,7 @@ public class MoUiUtil {
      * @param items   array of strings
      * @return arrayAdapter of a ListView with a simple list item as a layout for a given array of strings
      */
-    public ArrayAdapter<String> getArrayListAdapter(Context context, String[] items) {
+    public ArrayAdapter<String> getArrayAdapter(Context context, List<String> items) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, items);
         adapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
         return adapter;
@@ -91,6 +93,7 @@ public class MoUiUtil {
     public LayoutInflater getLayoutInflater(Context context) {
         return ViewUtils.getLayoutInflater(context);
     }
+
 
     /**
      * @return LayoutInflater from the Application context

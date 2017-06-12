@@ -27,7 +27,6 @@ public interface MoService {
 
     <T extends GeneralResponse> void getResponseGETForType(Class<T> typeResponse, String url, JSONObject body, ServiceResponseListener serviceResponse) throws Exception, JsonSyntaxException;
 
-
     <T extends GeneralResponse> void getResponseGETForType(Class<T> typeResponse, String url, ServiceResponseListener serviceResponse) throws Exception;
 
     <T extends GeneralResponse> void getResponseForType(final Class<T> typeResponse, final int method, final String url, final JSONObject body, final ServiceResponseListener serviceResponse) throws Exception, JsonSyntaxException;

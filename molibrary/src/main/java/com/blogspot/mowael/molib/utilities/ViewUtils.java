@@ -55,7 +55,7 @@ public class ViewUtils {
      * @return LayoutInflater from the provided context
      */
     public static LayoutInflater getLayoutInflater(Context context) {
-        return (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        return LayoutInflater.from(context); //context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public static void setMaxLength(int maxLength, EditText editText) {

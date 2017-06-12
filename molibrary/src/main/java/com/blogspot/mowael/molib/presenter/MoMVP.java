@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.blogspot.mowael.molib.fragments.MoFragment;
-import com.blogspot.mowael.molib.network.Service;
 import com.blogspot.mowael.molib.network.listeners.OnServiceLoading;
+import com.blogspot.mowael.molib.network.listeners.ServiceResponseListener;
 import com.blogspot.mowael.molib.network.pojo.GeneralResponse;
 
 import org.json.JSONObject;
@@ -41,19 +41,19 @@ public interface MoMVP {
         MoMVP.MoBusiness getService();
     }
 
-    interface MoBusiness {
-        void executeGET(String url, JSONObject body, Service.ServiceResponseListener serviceResponse) throws Exception;
+    interface MoBusiness <T extends GeneralResponse>{
+        void executeGET(String url, JSONObject body, ServiceResponseListener serviceResponse) throws Exception;
 
-        <T extends GeneralResponse> void executeGETForType(Class<T> typeResponse, String url, JSONObject body, Service.ServiceResponseListener serviceResponse) throws Exception;
+        void executeGETForType(Class<T> typeResponse, String url, JSONObject body, ServiceResponseListener serviceResponse) throws Exception;
 
-        void executePOST(String url, JSONObject body, Service.ServiceResponseListener serviceResponse) throws Exception;
+        void executePOST(String url, JSONObject body, ServiceResponseListener serviceResponse) throws Exception;
 
-        <T extends GeneralResponse> void executePOSTForType(Class<T> typeResponse, String url, JSONObject body, Service.ServiceResponseListener serviceResponse) throws Exception;
+        void executePOSTForType(Class<T> typeResponse, String url, JSONObject body, ServiceResponseListener serviceResponse) throws Exception;
 
         void setOnServiceLoadingListener(OnServiceLoading onServiceLoading);
     }
 
-    interface MoBusinessWithService extends Service.ServiceResponseListener {
+    interface MoBusinessWithService<T extends GeneralResponse> extends ServiceResponseListener<T> {
 
     }
 
