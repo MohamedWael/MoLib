@@ -1,5 +1,6 @@
 package com.blogspot.mowael.molib.adapters;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,23 +20,42 @@ public abstract class MoRecyclerEndlessAdapter<T, VH extends RecyclerView.ViewHo
 
     public static final int VIEW_TYPE_ITEM = 0;
     public static final int VIEW_TYPE_LOADING = 1;
+    private EndlessRecyclerScrollListener endlessScrollListener;
     private OnLoadMoreListener onLoadMoreListener;
 
     public MoRecyclerEndlessAdapter(ArrayList<T> items, RecyclerView mRecyclerView) {
         super(items);
-        mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(mRecyclerView.getLayoutManager()) {
-            @Override
-            public int getFooterViewType(int defaultNoFooterViewType) {
-                return VIEW_TYPE_LOADING;
-            }
-
+//        mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(mRecyclerView.getLayoutManager()) {
+//            @Override
+//            public int getFooterViewType(int defaultNoFooterViewType) {
+//                return VIEW_TYPE_LOADING;
+//            }
+//
+//            @Override
+//            public void onLoadMore(int page, int totalItemsCount) {
+//                Logger.d(page + "");
+//                if (onLoadMoreListener != null)
+//                    onLoadMoreListener.onLoadMore(page, totalItemsCount);
+//            }
+//        });
+        endlessScrollListener = new EndlessRecyclerScrollListener((LinearLayoutManager) mRecyclerView.getLayoutManager()) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
                 Logger.d(page + "");
                 if (onLoadMoreListener != null)
                     onLoadMoreListener.onLoadMore(page, totalItemsCount);
             }
-        });
+        };
+        endlessScrollListener.allowLoadMore(true);
+        mRecyclerView.addOnScrollListener(endlessScrollListener);
+    }
+
+    public void allowLoadMore(boolean isAllowed) {
+        endlessScrollListener.allowLoadMore(isAllowed);
+    }
+
+    public EndlessRecyclerScrollListener getEndlessScrollListener() {
+        return endlessScrollListener;
     }
 
     @Override

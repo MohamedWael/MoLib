@@ -12,6 +12,7 @@ import com.blogspot.mowael.molib.utilities.Logger;
  * <a href="https://gist.github.com/junfengren/f06c6f19e5832c62fe93b61ac8f72ff9">Source 1</a>
  * <a href="https://guides.codepath.com/android/Endless-Scrolling-with-AdapterViews-and-RecyclerView">Source 2</a>
  */
+// TODO: 6/16/2017 this scroll listener is buggy
 public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnScrollListener {
 
     //optional ScrollListener for the scroll methods if the user wants to do something
@@ -19,7 +20,7 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
 
     // The minimum amount of items to have below your current scroll position
     // before loading more.
-    private int visibleThreshold = 5;
+    private int visibleThreshold = 10;
     // The current offset index of data you have loaded
     private int currentPage = 0;
 
@@ -77,7 +78,7 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
 
     // This happens many times a second during a scroll, so be wary of the code you place here.
     // We are given a few useful parameters to help us work out if we need to load some more data,
-    // but first we check if we are waiting for the previous load to finish.
+    // but first we checkIfDenied if we are waiting for the previous load to finish.
     @Override
     public void onScrolled(final RecyclerView view, int dx, int dy) {
         if (onScrollListener != null) onScrollListener.onScrolled(view, dx, dy);
@@ -95,7 +96,7 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
         if (isAllowLoadMore) {
 
             if (isUseFooterView()) {
-                if (!isFooterView(adapter)) {
+                if (isFooterView(adapter)) {
 
                     if (totalItemCount < previousTotalItemCount) {//swiprefresh reload result to change listsize ,reset pageindex
                         this.currentPage = this.startingPageIndex;
@@ -113,7 +114,7 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
 
             if (!loading) {
 
-                // If it isn’t currently loading, we check to see if we have breached
+                // If it isn’t currently loading, we checkIfDenied to see if we have breached
                 // the visibleThreshold and need to reload more data.
                 // If we do need to reload some more data, we execute onLoadMore to fetch the data.
                 // threshold should reflect how many total columns there are too
@@ -138,7 +139,7 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
 
     public boolean isUseFooterView() {
         boolean isUse = footerViewType != defaultNoFooterViewType;
-//        Log.i(mTag, "isUseFooterView:" + isUse);
+        Logger.i(mTag, "isUseFooterView:" + isUse);
         return isUse;
     }
 
@@ -153,7 +154,7 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
             int lastPosition = ptotalItemCount - 1;
             int lastViewType = padapter.getItemViewType(lastPosition);
 
-            //  check the lastview is footview
+            //  checkIfDenied the lastview is footview
             isFooterView = lastViewType == footerViewType;
         }
 //        Log.i(mTag, "isFooterView:" + isFooterView);
@@ -197,7 +198,7 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
     // Defines the process for actually loading more data based on page
     public abstract void onLoadMore(int page, int totalItemsCount);
 
-    //set visibleThreshold   default: 5
+    //set visibleThreshold   default: 10
     public int getVisibleThreshold() {
         return visibleThreshold;
     }

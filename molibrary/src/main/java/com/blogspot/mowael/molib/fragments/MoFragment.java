@@ -276,6 +276,8 @@ public class MoFragment extends Fragment implements MoMVP.MoView, SwipeRefreshLa
 
     }
 
-
+    protected void finish(){
+        getActivity().finish();
+    }
 
 }

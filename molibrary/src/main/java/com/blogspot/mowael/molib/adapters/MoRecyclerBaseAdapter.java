@@ -18,7 +18,7 @@ public abstract class MoRecyclerBaseAdapter<T, VH extends RecyclerView.ViewHolde
     public void addItem(T item) {
         items.add(item);
         notifyItemInserted(this.items.size());
-        notifyDataSetChanged();
+//        notifyDataSetChanged();
     }
 
     @Override
@@ -26,8 +26,8 @@ public abstract class MoRecyclerBaseAdapter<T, VH extends RecyclerView.ViewHolde
 
     public void addItem(int position, T item) {
         items.add(position, item);
-        notifyItemInserted(this.items.size());
-//        notifyDataSetChanged();
+        notifyItemInserted(position);
+
     }
 
     public void setItems(ArrayList<T> items) {
@@ -44,9 +44,22 @@ public abstract class MoRecyclerBaseAdapter<T, VH extends RecyclerView.ViewHolde
     }
 
     public void addMoreItems(ArrayList<T> items) {
-        int lastItem = this.items.size();
-        this.items.addAll(items);
-        notifyItemRangeInserted(lastItem, this.items.size());
+        if (this.items != null) {
+            int lastItem = this.items.size();
+            this.items.addAll(items);
+            notifyItemRangeInserted(lastItem, this.items.size());
+        }
+    }
+
+    public void addMoreItemsUniquely(ArrayList<T> items) {
+        try {
+            ArrayList<T> intersection = new ArrayList<>(this.items);
+            intersection.retainAll(items);
+            items.removeAll(intersection);
+            addMoreItems(items);
+        } catch (UnsupportedOperationException e) {
+            addMoreItems(items);
+        }
     }
 
     public boolean isEmpty() {
