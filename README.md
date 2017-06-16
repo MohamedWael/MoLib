@@ -1,2 +1,2 @@
 ## MoLib
-A general purpose library to help me speed up application production.
+An android base project
