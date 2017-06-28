@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -29,6 +30,8 @@ public class MoActivity extends AppCompatActivity {
     * */
 //    private FragmentManager fragmentManager;
     private MoFragment fragment;
+    private boolean isRequestPermissionsResultForFragmentAllowed = false;
+    private boolean isActivityResultFragmentAllowed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +53,23 @@ public class MoActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (fragment != null) fragment.onActivityResult(requestCode, resultCode, data);
+        if (fragment != null && isActivityResultFragmentAllowed)
+            fragment.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void allowActivityResultForFragment(boolean isActivityResultFragmentAllowed) {
+        this.isActivityResultFragmentAllowed = isActivityResultFragmentAllowed;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (fragment != null && isRequestPermissionsResultForFragmentAllowed)
+            fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    public void allowRequestPermissionsResultForFragment(boolean isRequestPermissionsResultForFragmentAllowed) {
+        this.isRequestPermissionsResultForFragmentAllowed = isRequestPermissionsResultForFragmentAllowed;
     }
 
     /**

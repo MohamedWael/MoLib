@@ -96,12 +96,12 @@ public class Service implements NetworkStateReceiver.NetworkStateReceiverListene
     }
 
     public <T extends GeneralResponse> void getResponseForType(final Class<T> typeResponse, final int method, final String url, final JSONObject body, final ServiceResponseListener<T> serviceResponse) throws Exception, JsonSyntaxException {
-        if (onServiceLoading != null) onServiceLoading.onStartLoadingDialog();
+        if (onServiceLoading != null) onServiceLoading.onStartLoadingProgress();
         Logger.d("request", volley.uriEncoder(url));
         request = new ServiceRequest(method, volley.uriEncoder(url), body != null ? body : new JSONObject(), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                if (onServiceLoading != null) onServiceLoading.onLoadingDialogComplete();
+                if (onServiceLoading != null) onServiceLoading.onLoadingProgressComplete();
                 Logger.d("Response", response.toString());
                 Gson gson = new Gson();
                 T t = gson.fromJson(response.toString(), typeResponse);
@@ -115,7 +115,7 @@ public class Service implements NetworkStateReceiver.NetworkStateReceiverListene
             @Override
             public void onErrorResponse(VolleyError error) {
                 serviceResponse.onResponse(new JSONObject(), SERVER_ERROR);
-                if (onServiceLoading != null) onServiceLoading.onLoadingDialogComplete();
+                if (onServiceLoading != null) onServiceLoading.onLoadingProgressComplete();
                 String volleyErrorStr = error.toString();
                 if (volleyErrorStr.contains("com.android.volley.TimeoutError") && numberOfRetryingToGetResponse <= TRYING_LIMIT) {
                     Logger.e("if", volleyErrorStr);

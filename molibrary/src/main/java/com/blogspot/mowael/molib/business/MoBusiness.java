@@ -12,7 +12,7 @@ import org.json.JSONObject;
  * Created by moham on 4/30/2017.
  */
 
-public class MoBusiness<T extends GeneralResponse> implements MoMVP.MoBusiness<T>, MoMVP.MoBusinessWithService<T>, OnServiceLoading {
+public class MoBusiness<T extends GeneralResponse> implements MoMVP.MoBusiness, MoMVP.MoBusinessWithService<T>, OnServiceLoading {
 
     private ServiceResponseListener serviceResponse;
     private OnServiceLoading onServiceLoading;
@@ -23,7 +23,7 @@ public class MoBusiness<T extends GeneralResponse> implements MoMVP.MoBusiness<T
     @Override
     public void executeGET(String url, JSONObject body, ServiceResponseListener serviceResponse) throws Exception {
         this.serviceResponse = serviceResponse;
-        Service.getInstance().getResponseGET(url, body, this);
+        Service.getInstance().getResponseGET(url, body, (ServiceResponseListener<GeneralResponse>) this);
         setOnServiceLoading(this);
     }
 
@@ -37,7 +37,7 @@ public class MoBusiness<T extends GeneralResponse> implements MoMVP.MoBusiness<T
     @Override
     public void executePOST(String url, JSONObject body, ServiceResponseListener serviceResponse) throws Exception {
         this.serviceResponse = serviceResponse;
-        Service.getInstance().getResponsePOST(url, body, this);
+        Service.getInstance().getResponsePOST(url, body, (ServiceResponseListener<GeneralResponse>) this);
         setOnServiceLoading(this);
     }
 
@@ -73,12 +73,12 @@ public class MoBusiness<T extends GeneralResponse> implements MoMVP.MoBusiness<T
     }
 
     @Override
-    public void onStartLoadingDialog() {
-        if (onServiceLoading != null) onServiceLoading.onStartLoadingDialog();
+    public void onStartLoadingProgress() {
+        if (onServiceLoading != null) onServiceLoading.onStartLoadingProgress();
     }
 
     @Override
-    public void onLoadingDialogComplete() {
-        if (onServiceLoading != null) onServiceLoading.onLoadingDialogComplete();
+    public void onLoadingProgressComplete() {
+        if (onServiceLoading != null) onServiceLoading.onLoadingProgressComplete();
     }
 }

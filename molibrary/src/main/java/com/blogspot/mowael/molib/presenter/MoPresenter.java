@@ -1,16 +1,11 @@
 package com.blogspot.mowael.molib.presenter;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 
-import com.blogspot.mowael.molib.business.MoBusiness;
-import com.blogspot.mowael.molib.network.Service;
 import com.blogspot.mowael.molib.network.listeners.OnServiceLoading;
+import com.blogspot.mowael.molib.network.listeners.ServiceResponseListener;
 import com.blogspot.mowael.molib.network.pojo.GeneralResponse;
-import com.blogspot.mowael.molib.utilities.Logger;
 
 import org.json.JSONObject;
 
@@ -18,19 +13,18 @@ import org.json.JSONObject;
  * Created by moham on 4/26/2017.
  */
 
-public class MoPresenter implements MoMVP.MoPresenter, Service.ServiceResponseListener, OnServiceLoading {
+public abstract class MoPresenter implements MoMVP.MoPresenter, ServiceResponseListener, OnServiceLoading {
 
-    private AlertDialog progressDialog;
     protected MoMVP.MoView view;
-    private MoMVP.MoBusiness service;
 
     public MoPresenter(MoMVP.MoView view) {
         this.view = view;
-        getService().setOnServiceLoadingListener(this);
+        setOnServiceLoadingListener();
     }
 
-    public void setProgressDialog(AlertDialog progressDialog) {
-        this.progressDialog = progressDialog;
+    public void setOnServiceLoadingListener() {
+        if (getService() != null)
+            getService().setOnServiceLoadingListener(this);
     }
 
     @Override
@@ -41,44 +35,13 @@ public class MoPresenter implements MoMVP.MoPresenter, Service.ServiceResponseLi
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        if (grantResults.length == 0) {
-
-            for (int grantResult : grantResults) {
-                if (grantResult == PackageManager.PERMISSION_GRANTED) {
-                    onPermissionGranted(requestCode);
-                } else {
-                    onPermissionDenied(requestCode);
-                }
-            }
-
-            for (String permission : permissions) {
-
-            }
-
-//            Logger.d("PERMISSION_GRANTED", "true");
-        }
     }
+
+    public abstract MoMVP.MoBusiness getService();
 
 
     @Override
-    public void onPermissionGranted(int requestCode) {
-        Logger.d("GrantedRequestCode", requestCode + "");
-    }
-
-    @Override
-    public void onPermissionDenied(int requestCode) {
-        Logger.d("DeniedRequestCode", requestCode + "");
-    }
-
-    public MoMVP.MoBusiness getService() {
-        if (service == null) {
-            service = new MoBusiness();
-        }
-        return service;
-    }
-
-    @Override
-    public <T extends GeneralResponse> void onResponseSuccess(T response) {
+    public void onResponseSuccess(GeneralResponse response) {
 
     }
 
@@ -93,12 +56,12 @@ public class MoPresenter implements MoMVP.MoPresenter, Service.ServiceResponseLi
     }
 
     @Override
-    public void onStartLoadingDialog() {
-        if (progressDialog != null) progressDialog.show();
+    public void onStartLoadingProgress() {
+        if (view != null) view.onStartLoadingProgress();
     }
 
     @Override
-    public void onLoadingDialogComplete() {
-        if (progressDialog != null) progressDialog.dismiss();
+    public void onLoadingProgressComplete() {
+        if (view != null) view.onLoadingProgressComplete();
     }
 }
