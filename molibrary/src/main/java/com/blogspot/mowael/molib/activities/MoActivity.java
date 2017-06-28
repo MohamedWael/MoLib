@@ -6,7 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
-import android.support.v4.app.FragmentManager;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -27,7 +27,7 @@ public class MoActivity extends AppCompatActivity {
             drawer.addDrawerListener(toggle);
             toggle.syncState();
     * */
-    private FragmentManager fragmentManager;
+//    private FragmentManager fragmentManager;
     private MoFragment fragment;
 
     @Override
@@ -148,32 +148,76 @@ public class MoActivity extends AppCompatActivity {
         }
     }
 
+    @Nullable
     public MoFragment getCurrentFragment() {
         return fragment;
     }
 
+
+    /**
+     * load T fragment in the required resource in identified with the Tag tag
+     *
+     * @param fragment         the target fragment
+     * @param in               the layout to open fragment in it
+     * @param tag              the tag used to identify fragment
+     * @param isAddToBackStack whether to add the target fragment to backStack or not
+     * @param <T>              any fragment that extend the MoFragment
+     */
     public <T extends MoFragment> void loadFragment(T fragment, @IdRes int in, String tag, boolean isAddToBackStack) {
         this.fragment = fragment;
-        if (fragmentManager == null) {
-            fragmentManager = getSupportFragmentManager();
-        }
         if (isAddToBackStack)
-            fragmentManager.beginTransaction().addToBackStack(tag).replace(in, fragment, tag).commit();
-        else fragmentManager.beginTransaction().replace(in, fragment, tag).commit();
+            getSupportFragmentManager().beginTransaction().addToBackStack(tag).replace(in, fragment, tag).commit();
+        else
+            getSupportFragmentManager().beginTransaction().replace(in, fragment, tag).commit();
     }
 
+    /**
+     * the tag is set to class name
+     *
+     * @param fragment         the target fragment
+     * @param in               the layout to open fragment in it
+     * @param isAddToBackStack whether to add the target fragment to backStack or not
+     * @param <T>              any fragment that extend the MoFragment
+     */
     public <T extends MoFragment> void loadFragment(T fragment, @IdRes int in, boolean isAddToBackStack) {
         loadFragment(fragment, in, fragment.getClass().getSimpleName(), isAddToBackStack);
     }
 
+    /**
+     * the tag is set to class name
+     * isAddToBackStack is set to true
+     *
+     * @param fragment the target fragment
+     * @param in       the layout to open fragment in it
+     * @param <T>      any fragment that extend the MoFragment
+     */
     public <T extends MoFragment> void loadFragment(T fragment, @IdRes int in) {
         loadFragment(fragment, in, true);
     }
 
+    /**
+     * * load fragment in the default container of the MoActivity
+     * <p>
+     * the tag is set to class name
+     * in is set to default fragment container in the MoActivity
+     *
+     * @param fragment         the target fragment
+     * @param isAddToBackStack whether to add the target fragment to backStack or not
+     * @param <T>              any fragment that extend the MoFragment
+     */
     public <T extends MoFragment> void loadFragment(T fragment, boolean isAddToBackStack) {
         loadFragment(fragment, R.id.flFragment, isAddToBackStack);
     }
 
+    /**
+     * load fragment in the default container of the MoActivity
+     * <p>
+     * the tag is set to class name
+     * isAddToBackStack is set to true
+     *
+     * @param fragment the target fragment
+     * @param <T>      any fragment that extend the MoFragment
+     */
     public <T extends MoFragment> void loadFragment(T fragment) {
         loadFragment(fragment, true);
     }
