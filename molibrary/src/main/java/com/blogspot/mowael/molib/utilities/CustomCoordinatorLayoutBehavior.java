@@ -8,11 +8,15 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 
+import com.ids.library.engine.utilities.LogUtility;
+
 /**
- * Created by moham on 4/25/2017.
+ * Created by mwael on 4/25/2017.
  */
 
-public class CustomCoordinatorLayoutBehavior<T extends View> extends CoordinatorLayout.Behavior<T>{
+public class CustomCoordinatorLayoutBehavior<T extends View> extends CoordinatorLayout.Behavior<T> {
+
+    private int scrollFactor = 10;
 
     public CustomCoordinatorLayoutBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -31,15 +35,15 @@ public class CustomCoordinatorLayoutBehavior<T extends View> extends Coordinator
     @Override
     public void onNestedScroll(CoordinatorLayout coordinatorLayout, final T child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
-
-        Logger.e("dyConsumed", dyConsumed + "");
-        Logger.e("dyUnconsumed", dyUnconsumed + "");
-
-        if (dyConsumed > 0) {
-            Logger.d("dyConsumed > 0", dxConsumed + "");
+        if (LogUtility.WRITE_TO_LOG_FILE) {
+            LogUtility.writeErrorLog("dyConsumed", dyConsumed + "");
+            LogUtility.writeErrorLog("dyUnconsumed", dyUnconsumed + "");
+        }
+        if (dyConsumed > 0 && dyConsumed >= scrollFactor) {
+            if (LogUtility.WRITE_TO_LOG_FILE)
+                LogUtility.writeErrorLog("dyConsumed > 0", dxConsumed + "");
 
             if (!hide) {
-//                YoYo.with(Techniques.FadeOutDown).playOn(child);
                 Animation animation = new TranslateAnimation(0, 0, 0, child.getHeight());
                 animation.setDuration(500);
                 animation.setFillAfter(true);
@@ -47,11 +51,12 @@ public class CustomCoordinatorLayoutBehavior<T extends View> extends Coordinator
 
                 hide = true;
             }
-//            child.hide();
-        } else if (dyConsumed < 0) {
-            Logger.d("dyConsumed < 0", dyConsumed + "");
+
+        } else if (dyConsumed < 0 && (Math.abs(dyConsumed) >= scrollFactor)) {
+            if (LogUtility.WRITE_TO_LOG_FILE)
+                LogUtility.writeErrorLog("dyConsumed < 0", dyConsumed + "");
             if (hide) {
-//                YoYo.with(Techniques.FadeInUp).playOn(child);
+
                 Animation animation = new TranslateAnimation(0, 0, child.getHeight(), 0);
                 animation.setDuration(500);
                 animation.setFillAfter(true);
@@ -59,7 +64,6 @@ public class CustomCoordinatorLayoutBehavior<T extends View> extends Coordinator
 
                 hide = false;
             }
-//            child.show();
         }
 
     }
