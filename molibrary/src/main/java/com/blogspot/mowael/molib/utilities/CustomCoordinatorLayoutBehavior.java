@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 
-import com.ids.library.engine.utilities.LogUtility;
-
 /**
  * Created by mwael on 4/25/2017.
  */
@@ -35,14 +33,11 @@ public class CustomCoordinatorLayoutBehavior<T extends View> extends Coordinator
     @Override
     public void onNestedScroll(CoordinatorLayout coordinatorLayout, final T child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
-        if (LogUtility.WRITE_TO_LOG_FILE) {
-            LogUtility.writeErrorLog("dyConsumed", dyConsumed + "");
-            LogUtility.writeErrorLog("dyUnconsumed", dyUnconsumed + "");
-        }
+       Logger.e("dyConsumed", dyConsumed + "");
+        Logger.e("dyUnconsumed", dyUnconsumed + "");
         if (dyConsumed > 0 && dyConsumed >= scrollFactor) {
-            if (LogUtility.WRITE_TO_LOG_FILE)
-                LogUtility.writeErrorLog("dyConsumed > 0", dxConsumed + "");
-
+           Logger.d("dyConsumed > 0", dxConsumed + "");
+		   
             if (!hide) {
                 Animation animation = new TranslateAnimation(0, 0, 0, child.getHeight());
                 animation.setDuration(500);
@@ -53,8 +48,8 @@ public class CustomCoordinatorLayoutBehavior<T extends View> extends Coordinator
             }
 
         } else if (dyConsumed < 0 && (Math.abs(dyConsumed) >= scrollFactor)) {
-            if (LogUtility.WRITE_TO_LOG_FILE)
-                LogUtility.writeErrorLog("dyConsumed < 0", dyConsumed + "");
+          Logger.d("dyConsumed < 0", dyConsumed + "");
+		  
             if (hide) {
 
                 Animation animation = new TranslateAnimation(0, 0, child.getHeight(), 0);
