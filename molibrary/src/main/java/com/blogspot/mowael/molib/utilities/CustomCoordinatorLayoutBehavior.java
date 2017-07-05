@@ -15,6 +15,7 @@ import android.view.animation.TranslateAnimation;
 public class CustomCoordinatorLayoutBehavior<T extends View> extends CoordinatorLayout.Behavior<T> {
 
     private int scrollFactor = 10;
+    private int scrollAnimationDuration = 500;
 
     public CustomCoordinatorLayoutBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -40,7 +41,7 @@ public class CustomCoordinatorLayoutBehavior<T extends View> extends Coordinator
 		   
             if (!hide) {
                 Animation animation = new TranslateAnimation(0, 0, 0, child.getHeight());
-                animation.setDuration(500);
+                animation.setDuration(scrollAnimationDuration);
                 animation.setFillAfter(true);
                 child.startAnimation(animation);
 
@@ -53,7 +54,7 @@ public class CustomCoordinatorLayoutBehavior<T extends View> extends Coordinator
             if (hide) {
 
                 Animation animation = new TranslateAnimation(0, 0, child.getHeight(), 0);
-                animation.setDuration(500);
+                animation.setDuration(scrollAnimationDuration);
                 animation.setFillAfter(true);
                 child.startAnimation(animation);
 
