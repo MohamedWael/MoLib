@@ -88,6 +88,12 @@ public class DownloadUtil {
         };
     }
 
+    public long downloadWithStatus(Uri uri, String fileName, String description) {
+        long downloadID = download(uri, fileName, description);
+        checkDownloadStatus(downloadID);
+        return downloadID;
+    }
+
     public long download(Uri uri, String fileName, String description) {
 
         long downloadID;
@@ -102,7 +108,7 @@ public class DownloadUtil {
 
         //Setting description of request
         request.setDescription(description);
-		request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         //Set the local destination for the downloaded file to a path
         //within the application's external files directory
         request.setDestinationInExternalFilesDir(mContext, Environment.DIRECTORY_DOWNLOADS, fileName);
@@ -239,13 +245,13 @@ public class DownloadUtil {
             @Override
             public void onReceive(Context context, Intent intent) {
 
-                //check if the broadcast message is for our enqueued download
+                //checkIfDenied if the broadcast message is for our enqueued download
                 long referenceId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
 
                 if (referenceId == downloadedFileId) {
                     Toast toast = Toast.makeText(mContext, "Download Complete", Toast.LENGTH_LONG);
                     toast.show();
-                    downloadCompleteListener.onDownloadComplete(downloadManager.getUriForDownloadedFile(downloadedFileId));
+                    downloadCompleteListener.onDownloadComplete(downloadManager.getUriForDownloadedFile(downloadedFileId), downloadedFileId);
                     downloadListener.setDownloaded(true);
                 }
             }
@@ -300,6 +306,6 @@ public class DownloadUtil {
     public interface DownloadCompleteListener {
         void getProgress(double progress, long downloadedBytes, long sizeInBytes);
 
-        void onDownloadComplete(Uri fileLocalUri);
+        void onDownloadComplete(Uri fileLocalUri, long downloadedFileId);
     }
 }
