@@ -18,12 +18,12 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.blogspot.mowael.molib.R;
-import com.blogspot.mowael.molib.presenter.MoMVP;
+import com.blogspot.mowael.molib.presenter.MoContract;
 import com.blogspot.mowael.molib.utilities.Logger;
 
 //// TODO: 6/12/2017 Make sure to remove any allocated variable on the on destroy method
 
-public abstract class MoFragment extends Fragment implements MoMVP.MoView, SwipeRefreshLayout.OnRefreshListener {
+public abstract class MoFragment extends Fragment implements MoContract.MoView, SwipeRefreshLayout.OnRefreshListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -254,7 +254,5 @@ public abstract class MoFragment extends Fragment implements MoMVP.MoView, Swipe
     protected void finish() {
         getActivity().finish();
     }
-
-    public abstract MoMVP.MoPresenter getPresenter();
 
 }

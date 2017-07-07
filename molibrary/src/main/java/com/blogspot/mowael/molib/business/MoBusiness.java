@@ -4,7 +4,7 @@ import com.blogspot.mowael.molib.network.Service;
 import com.blogspot.mowael.molib.network.listeners.OnServiceLoading;
 import com.blogspot.mowael.molib.network.listeners.ServiceResponseListener;
 import com.blogspot.mowael.molib.network.pojo.GeneralResponse;
-import com.blogspot.mowael.molib.presenter.MoMVP;
+import com.blogspot.mowael.molib.presenter.MoContract;
 
 import org.json.JSONObject;
 
@@ -12,7 +12,7 @@ import org.json.JSONObject;
  * Created by moham on 4/30/2017.
  */
 
-public class MoBusiness<T extends GeneralResponse> implements MoMVP.MoBusiness, MoMVP.MoBusinessWithService<T>, OnServiceLoading {
+public class MoBusiness<T extends GeneralResponse> implements MoContract.MoBusiness, MoContract.MoBusinessWithService<T>, OnServiceLoading {
 
     private ServiceResponseListener serviceResponse;
     private OnServiceLoading onServiceLoading;

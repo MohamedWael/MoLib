@@ -10,22 +10,25 @@ import com.blogspot.mowael.molib.network.pojo.GeneralResponse;
 import org.json.JSONObject;
 
 /**
- * MoMVP is just a container for the MVP listeners
+ * MoContract is just a container for the MVP listeners
  * Created by mohamed wael on 4/26/2017.
  */
 
-public interface MoMVP {
+public interface MoContract {
 
-    interface MoView extends OnServiceLoading{
-
+    interface MoView<T extends MoPresenter> extends OnServiceLoading {
+        T getPresenter();
     }
 
-    interface MoPresenter {
+    interface MoPresenter<T extends MoContract.MoView> {
+
+        T getView();
+
         void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults);
 
         void onActivityResult(int requestCode, int resultCode, Intent data);
 
-        MoMVP.MoBusiness getService();
+        MoContract.MoBusiness getService();
     }
 
     interface MoBusiness {

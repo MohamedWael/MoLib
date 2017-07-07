@@ -1,5 +1,6 @@
 package com.blogspot.mowael.molib.presenter;
 
+
 import android.content.Intent;
 import android.support.annotation.NonNull;
 
@@ -13,11 +14,11 @@ import org.json.JSONObject;
  * Created by moham on 4/26/2017.
  */
 
-public abstract class MoPresenter implements MoMVP.MoPresenter, ServiceResponseListener, OnServiceLoading {
+public abstract class MoPresenter<T extends MoContract.MoView> implements MoContract.MoPresenter<T>, ServiceResponseListener, OnServiceLoading {
 
-    protected MoMVP.MoView view;
+    protected T view;
 
-    public MoPresenter(MoMVP.MoView view) {
+    public MoPresenter(T view) {
         this.view = view;
         setOnServiceLoadingListener();
     }
@@ -37,7 +38,7 @@ public abstract class MoPresenter implements MoMVP.MoPresenter, ServiceResponseL
 
     }
 
-    public abstract MoMVP.MoBusiness getService();
+    public abstract MoContract.MoBusiness getService();
 
 
     @Override
