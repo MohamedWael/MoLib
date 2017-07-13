@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 
 import com.blogspot.mowael.molib.R;
 import com.blogspot.mowael.molib.fragments.MoFragment;
@@ -44,7 +45,8 @@ public class MoActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         ViewGroup container = (ViewGroup) findViewById(R.id.flFragment);
         if (layoutRes != 0) {
-            findViewById(R.id.tvMoActivityDescription).setVisibility(View.GONE);
+            View view = findViewById(R.id.tvMoActivityDescription);
+            ((RelativeLayout) view.getParent()).removeView(view);
             container.addView(inflater.inflate(layoutRes, null));
         }
     }
