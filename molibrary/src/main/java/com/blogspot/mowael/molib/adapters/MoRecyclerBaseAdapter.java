@@ -38,9 +38,19 @@ public abstract class MoRecyclerBaseAdapter<T, VH extends RecyclerView.ViewHolde
         notifyDataSetChanged();
     }
 
-    public void copyItems(ArrayList<T> items) {
-        this.items = new ArrayList<>(items);
-        notifyDataSetChanged();
+    public void removeItem(T item) {
+        if (items != null && items.contains(item)) {
+            int position = items.indexOf(item);
+            items.remove(item);
+            notifyItemRemoved(position);
+        }
+    }
+
+    public void removeItem(int position) {
+        if (items != null) {
+            items.remove(position);
+            notifyItemRemoved(position);
+        }
     }
 
     public void addMoreItems(ArrayList<T> items) {
