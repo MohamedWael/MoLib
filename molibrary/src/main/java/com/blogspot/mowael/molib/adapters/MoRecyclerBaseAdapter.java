@@ -80,6 +80,10 @@ public abstract class MoRecyclerBaseAdapter<T, VH extends RecyclerView.ViewHolde
         return items.get(position);
     }
 
+    public ArrayList<T> getItems() {
+        return items;
+    }
+
     @Override
     public int getItemCount() {
         return items != null ? items.size() : 0;
