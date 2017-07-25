@@ -50,19 +50,19 @@ public class ImageUtil {
 
 
     public String getStringImageJPG(Bitmap bmp) {
-        return Base64.encodeToString(convertBitmapToBytesJPG(bmp), Base64.DEFAULT);
+        return Base64.encodeToString(convertBitmapToBytesJPG(bmp), Base64.NO_WRAP);
     }
 
     public String getStringImagePNG(Bitmap bmp) {
-        return Base64.encodeToString(convertBitmapToBytesPNG(bmp), Base64.DEFAULT);
+        return Base64.encodeToString(convertBitmapToBytesPNG(bmp), Base64.NO_WRAP);
     }
 
     public String getReducedStringImagePNG(Bitmap bmp) {
-        return Base64.encodeToString(convertBitmapToBytesPNG(reduceImageSizePNG(bmp)), Base64.DEFAULT);
+        return Base64.encodeToString(convertBitmapToBytesPNG(reduceImageSizePNG(bmp)), Base64.NO_WRAP);
     }
 
     public String getReducedStringImageJPG(Bitmap bmp) {
-        return Base64.encodeToString(convertBitmapToBytesJPG(reduceImageSizeJPG(bmp)), Base64.DEFAULT);
+        return Base64.encodeToString(convertBitmapToBytesJPG(reduceImageSizeJPG(bmp)), Base64.NO_WRAP);
     }
 
     public Bitmap reduceImageSizePNG(Bitmap bmp) {
