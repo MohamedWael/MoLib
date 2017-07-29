@@ -148,12 +148,12 @@ public abstract class MoFragment extends Fragment implements MoContract.MoView, 
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (getPresenter() != null)
-            getPresenter().onActivityResult(requestCode, resultCode, data);
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (getPresenter() != null)
+//            getPresenter().onActivityResult(requestCode, resultCode, data);
+//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -255,4 +255,18 @@ public abstract class MoFragment extends Fragment implements MoContract.MoView, 
         getActivity().finish();
     }
 
+    @Override
+    public void onDestroy() {
+        if (rootView != null) rootView = null;
+        if (pbProgress != null) pbProgress = null;
+        if (rlFragmentRoot != null) rlFragmentRoot = null;
+        if (srlRoot != null) srlRoot = null;
+        if (llBlockView != null) llBlockView = null;
+        if (getPresenter() != null) {
+            getPresenter().onDestroy();
+            MoContract.MoPresenter presenter = getPresenter();
+            presenter = null;
+        }
+        super.onDestroy();
+    }
 }

@@ -242,4 +242,10 @@ public class MoActivity extends AppCompatActivity {
         loadFragment(fragment, true);
     }
 
+    @Override
+    protected void onDestroy() {
+        if (fragment != null)
+            fragment = null;
+        super.onDestroy();
+    }
 }

@@ -1,6 +1,5 @@
 package com.blogspot.mowael.molib.presenter;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.blogspot.mowael.molib.network.listeners.OnServiceLoading;
@@ -26,7 +25,9 @@ public interface MoContract {
 
         void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults);
 
-        void onActivityResult(int requestCode, int resultCode, Intent data);
+//        void onActivityResult(int requestCode, int resultCode, Intent data);
+
+        void onDestroy();
 
         MoContract.MoBusiness getService();
     }
