@@ -12,7 +12,8 @@ import java.util.HashMap;
 public class SQLCreator {
 
     public enum DBDataTypes {
-        PRIMARY_KEY("PRIMARY KEY"), UNIQUE("UNIQUE"), AUTO_INCREMENT("AUTO_INCREMENT"), NOT_NULL("NOT NULL"), TEXT("TEXT"), TEXT_UNIQUE(TEXT + " " + UNIQUE.getDataType()),
+        PRIMARY_KEY("PRIMARY KEY"), UNIQUE("UNIQUE"), AUTO_INCREMENT("AUTO_INCREMENT"), NOT_NULL("NOT NULL"),
+        TEXT("TEXT"), TEXT_UNIQUE(TEXT + " " + UNIQUE.getDataType()),
         INTEGER("INTEGER"), INTEGER_PRIMARY_KEY(INTEGER.getDataType() + " " + PRIMARY_KEY.getDataType()),
         DOUBLE("DOUBLE"), DOUBLE_PRIMARY_KEY(DOUBLE.getDataType() + " " + PRIMARY_KEY.getDataType());
 
