@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import com.blogspot.mowael.molib.R;
+import com.blogspot.mowael.molib.application.MoApplication;
 import com.blogspot.mowael.molib.fragments.MoFragment;
 
 public class MoActivity extends AppCompatActivity {
@@ -240,6 +241,16 @@ public class MoActivity extends AppCompatActivity {
      */
     public <T extends MoFragment> void loadFragment(T fragment) {
         loadFragment(fragment, true);
+    }
+
+    /**
+     * restart the current activity and check if the local changed
+     */
+    public void restartActivity() {
+        ((MoApplication) getApplication()).refreshLocale(this, true);
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
     }
 
     @Override
