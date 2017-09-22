@@ -28,6 +28,10 @@ public class MoSplashScreenActivity extends MoActivity implements SplashScreenSe
                 Intent intentIntro = new Intent(MoSplashScreenActivity.this,
                         settings != null ? settings.getMainActivityClass() : MoActivity.class);
 
+                if (settings.getBundle() != null) {
+                    intentIntro.putExtras(settings.getBundle());
+                }
+
                 startActivity(intentIntro);
                 finish();
             }
@@ -45,11 +49,16 @@ public class MoSplashScreenActivity extends MoActivity implements SplashScreenSe
 
     @Override
     public int getSplashScreenTimeOut() {
-        return MoConfig.SPLASH_TIME_OUT;
+        return MoConfig.DEFAULT_SPLASH_TIME_OUT;
     }
 
     @Override
     public Class<? extends AppCompatActivity> getMainActivityClass() {
         return MoActivity.class;
+    }
+
+    @Override
+    public Bundle getBundle() {
+        return null;
     }
 }

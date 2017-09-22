@@ -1,6 +1,6 @@
 package com.blogspot.mowael.molib.activities;
 
-import android.app.Activity;
+import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
 
@@ -16,4 +16,6 @@ public interface SplashScreenSettings {
     int getSplashScreenTimeOut();
 
     Class<? extends AppCompatActivity> getMainActivityClass();
+
+    Bundle getBundle();
 }

@@ -6,7 +6,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.blogspot.mowael.molib.R;
-import com.blogspot.mowael.molib.network.listeners.OnServiceLoading;
 import com.blogspot.mowael.molib.network.listeners.ServiceResponseListener;
 import com.blogspot.mowael.molib.network.pojo.GeneralResponse;
 import com.blogspot.mowael.molib.utilities.Logger;
@@ -35,7 +34,6 @@ public class Service implements NetworkStateReceiver.NetworkStateReceiverListene
     private ServiceRequest request;
     private int numberOfRetryingToGetResponse = 0;
     private int INITIAL_TIME_OUT_MS = 5000;
-    private OnServiceLoading onServiceLoading;
 
 
     public static Service getInstance() {
@@ -52,6 +50,11 @@ public class Service implements NetworkStateReceiver.NetworkStateReceiverListene
     private Service() {
     }
 
+    /**
+     * set application context and initialize service components
+     *
+     * @param mContext application context
+     */
     public void initService(Context mContext) {
         setContext(mContext);
         initService();
@@ -61,72 +64,65 @@ public class Service implements NetworkStateReceiver.NetworkStateReceiverListene
         this.mContext = mContext;
     }
 
+    /**
+     * initialize service components
+     */
     public void initService() {
         volley = VolleyClient.getInstance(mContext);
         volley.getRequestQueue().start();
         NetworkStateReceiver receiver = NetworkStateReceiver.getInstance();
         mContext.registerReceiver(receiver, receiver.getIntentFilter());
-//        receiver.addListener(this);
+        receiver.addListener(this);
         requests = new ArrayList<>();
     }
 
 
-    public void getResponsePOST(String url, JSONObject body, ServiceResponseListener<GeneralResponse> serviceResponse) throws Exception, JsonSyntaxException {
+    public void getResponsePOST(String url, JSONObject body, ServiceResponseListener serviceResponse) throws JsonSyntaxException {
         getResponseForType(GeneralResponse.class, Request.Method.POST, url, body, serviceResponse);
     }
 
-    public void getResponseGET(String url, ServiceResponseListener<GeneralResponse> serviceResponse) throws Exception {
+    public void getResponseGET(String url, ServiceResponseListener serviceResponse) throws JsonSyntaxException {
         getResponseForType(GeneralResponse.class, Request.Method.GET, url, new JSONObject(), serviceResponse);
     }
 
-    public void getResponseGET(String url, JSONObject body, ServiceResponseListener<GeneralResponse> serviceResponse) throws Exception, JsonSyntaxException {
+    public void getResponseGET(String url, JSONObject body, ServiceResponseListener serviceResponse) throws JsonSyntaxException {
         getResponseForType(GeneralResponse.class, Request.Method.GET, url, body, serviceResponse);
     }
 
-    public <T extends GeneralResponse> void getResponsePOSTForType(Class<T> typeResponse, String url, JSONObject body, ServiceResponseListener<T> serviceResponse) throws Exception, JsonSyntaxException {
+    public <T extends GeneralResponse> void getResponsePOSTForType(Class<T> typeResponse, String url, JSONObject body, ServiceResponseListener serviceResponse) throws JsonSyntaxException {
         getResponseForType(typeResponse, Request.Method.POST, url, body, serviceResponse);
     }
 
-    public <T extends GeneralResponse> void getResponseGETForType(Class<T> typeResponse, String url, JSONObject body, ServiceResponseListener<T> serviceResponse) throws Exception, JsonSyntaxException {
+    public <T extends GeneralResponse> void getResponseGETForType(Class<T> typeResponse, String url, JSONObject body, ServiceResponseListener serviceResponse) throws JsonSyntaxException {
         getResponseForType(typeResponse, Request.Method.GET, url, body, serviceResponse);
     }
 
-    public <T extends GeneralResponse> void getResponseGETForType(Class<T> typeResponse, String url, ServiceResponseListener<T> serviceResponse) throws Exception {
+    public <T extends GeneralResponse> void getResponseGETForType(Class<T> typeResponse, String url, ServiceResponseListener serviceResponse) throws JsonSyntaxException  {
         getResponseForType(typeResponse, Request.Method.GET, url, new JSONObject(), serviceResponse);
     }
 
-    public <T extends GeneralResponse> void getResponseForType(final Class<T> typeResponse, final int method, final String url, final JSONObject body, final ServiceResponseListener<T> serviceResponse) throws Exception, JsonSyntaxException {
-        if (onServiceLoading != null) onServiceLoading.onStartLoadingProgress();
+    public <T extends GeneralResponse> void getResponseForType(final Class<T> typeResponse, final int method, final String url, final JSONObject body, final ServiceResponseListener serviceResponse) throws JsonSyntaxException {
         Logger.d("request", volley.uriEncoder(url));
         request = new ServiceRequest(method, volley.uriEncoder(url), body != null ? body : new JSONObject(), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                if (onServiceLoading != null) onServiceLoading.onLoadingProgressComplete();
                 Logger.d("Response", response.toString());
                 Gson gson = new Gson();
+                serviceResponse.onResponse(response);
                 T t = gson.fromJson(response.toString(), typeResponse);
-                serviceResponse.onResponse(response, t.getCode());
-                if (t.isSuccess()) {
-                    serviceResponse.onResponseSuccess(t);
-                }
-
+                serviceResponse.onResponseParsingSuccess(t);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                serviceResponse.onResponse(new JSONObject(), SERVER_ERROR);
-                if (onServiceLoading != null) onServiceLoading.onLoadingProgressComplete();
+                serviceResponse.onError(error);
                 String volleyErrorStr = error.toString();
                 if (volleyErrorStr.contains("com.android.volley.TimeoutError") && numberOfRetryingToGetResponse <= TRYING_LIMIT) {
-                    Logger.e("if", volleyErrorStr);
-
+                    Logger.e("TimeoutError", volleyErrorStr);
                     volley.addToRequestQueue(request);
-
                     numberOfRetryingToGetResponse++;
                 } else if (volleyErrorStr.contains("com.android.volley.NoConnectionError")) {
-                    Logger.e("elseIf", volleyErrorStr);
-                    ViewUtils.toastMsg(mContext, mContext.getString(R.string.no_connection));
-                    serviceResponse.onNetworkUnavailable(mContext.getString(R.string.no_connection));
+                    Logger.e("NoConnectionError", volleyErrorStr);
                 } else {
                     Logger.e("volleyErrorStr", volleyErrorStr);
                     ViewUtils.toastMsg(mContext, mContext.getString(R.string.connection_error));
@@ -145,68 +141,12 @@ public class Service implements NetworkStateReceiver.NetworkStateReceiverListene
 //        System.setProperty("http.keepAlive", "false");
     }
 
-    /**
-     * this method is deprecated use getResponseForType() instead
-     *
-     * @param method
-     * @param url
-     * @param body
-     * @param serviceResponse
-     * @throws Exception
-     * @throws JsonSyntaxException
-     */
-    @Deprecated
-    public void getResponse(final int method, final String url, final JSONObject body, final ServiceResponseListener serviceResponse) throws Exception, JsonSyntaxException {
-        Logger.d("request", volley.uriEncoder(url));
-        request = new ServiceRequest(method, volley.uriEncoder(url), body != null ? body : new JSONObject(), new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Logger.d("Response", response.toString());
-                serviceResponse.onResponse(response, 200);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                serviceResponse.onError();
-                String volleyErrorStr = error.toString();
-                if (volleyErrorStr.contains("com.android.volley.TimeoutError") && numberOfRetryingToGetResponse <= TRYING_LIMIT) {
-                    Logger.e("if", volleyErrorStr);
-
-                    volley.addToRequestQueue(request);
-
-                    numberOfRetryingToGetResponse++;
-                } else if (volleyErrorStr.contains("com.android.volley.NoConnectionError")) {
-                    Logger.e("elseIf", volleyErrorStr);
-                    ViewUtils.toastMsg(mContext, mContext.getString(R.string.no_connection));
-                    serviceResponse.onNetworkUnavailable(mContext.getString(R.string.no_connection));
-//                    if (!cached) cacheRequest(request);
-                } else {
-                    Logger.e("volleyErrorStr", volleyErrorStr);
-                    ViewUtils.toastMsg(mContext, mContext.getString(R.string.connection_error));
-                }
-                Logger.d("VolleyError", error.toString());
-            }
-        }) {
-            @Override
-            public byte[] getBody() {
-                Logger.d("body", body.toString());
-                return super.getBody();
-            }
-        };
-        volley.addToRequestQueue(request);
-    }
-
     public ServiceRequest getRequest() {
         return request;
     }
 
-
     public VolleyClient getVolleyClient() {
         return volley;
-    }
-
-    public void setOnServiceLoading(OnServiceLoading onServiceLoading) {
-        this.onServiceLoading = onServiceLoading;
     }
 
     /**

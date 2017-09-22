@@ -1,10 +1,11 @@
 package com.blogspot.mowael.molib.business;
 
+import com.android.volley.VolleyError;
 import com.blogspot.mowael.molib.network.Service;
-import com.blogspot.mowael.molib.network.listeners.OnServiceLoading;
 import com.blogspot.mowael.molib.network.listeners.ServiceResponseListener;
 import com.blogspot.mowael.molib.network.pojo.GeneralResponse;
 import com.blogspot.mowael.molib.presenter.MoContract;
+import com.google.gson.JsonSyntaxException;
 
 import org.json.JSONObject;
 
@@ -12,73 +13,50 @@ import org.json.JSONObject;
  * Created by moham on 4/30/2017.
  */
 
-public class MoBusiness<T extends GeneralResponse> implements MoContract.MoBusiness, MoContract.MoBusinessWithService<T>, OnServiceLoading {
+public class MoBusiness<T extends GeneralResponse> implements MoContract.MoBusiness, MoContract.MoBusinessWithService<T>{
 
     private ServiceResponseListener serviceResponse;
-    private OnServiceLoading onServiceLoading;
 
     public MoBusiness() {
     }
 
     @Override
-    public void executeGET(String url, JSONObject body, ServiceResponseListener serviceResponse) throws Exception {
+    public void executeGET(String url, JSONObject body, ServiceResponseListener serviceResponse) throws JsonSyntaxException {
         this.serviceResponse = serviceResponse;
-        Service.getInstance().getResponseGET(url, body, (ServiceResponseListener<GeneralResponse>) this);
-        setOnServiceLoading(this);
+        Service.getInstance().getResponseGET(url, body, (ServiceResponseListener) this);
     }
 
     @Override
-    public void executeGETForType(Class<T> typeResponse, String url, JSONObject body, ServiceResponseListener serviceResponse) throws Exception {
+    public void executeGETForType(Class<T> typeResponse, String url, JSONObject body, ServiceResponseListener serviceResponse) throws JsonSyntaxException {
         this.serviceResponse = serviceResponse;
         Service.getInstance().getResponseGETForType(typeResponse, url, body, this);
-        setOnServiceLoading(this);
     }
 
     @Override
-    public void executePOST(String url, JSONObject body, ServiceResponseListener serviceResponse) throws Exception {
+    public void executePOST(String url, JSONObject body, ServiceResponseListener serviceResponse) throws JsonSyntaxException {
         this.serviceResponse = serviceResponse;
-        Service.getInstance().getResponsePOST(url, body, (ServiceResponseListener<GeneralResponse>) this);
-        setOnServiceLoading(this);
+        Service.getInstance().getResponsePOST(url, body, (ServiceResponseListener) this);
     }
 
     @Override
-    public void executePOSTForType(Class<T> typeResponse, String url, JSONObject body, ServiceResponseListener serviceResponse) throws Exception {
+    public void executePOSTForType(Class<T> typeResponse, String url, JSONObject body, ServiceResponseListener serviceResponse) throws JsonSyntaxException {
         this.serviceResponse = serviceResponse;
         Service.getInstance().getResponsePOSTForType(typeResponse, url, body, this);
-        setOnServiceLoading(this);
     }
 
     @Override
-    public void onResponseSuccess(T response) {
-        if (serviceResponse != null) serviceResponse.onResponseSuccess(response);
+    public <T extends GeneralResponse> void onResponseParsingSuccess(T response) {
+        if (serviceResponse != null) serviceResponse.onResponseParsingSuccess(response);
     }
 
     @Override
-    public void onResponse(JSONObject response, int responseCode) {
-        if (serviceResponse != null) serviceResponse.onResponse(response, responseCode);
+    public void onResponse(JSONObject response) {
+        if (serviceResponse != null) serviceResponse.onResponse(response);
     }
 
     @Override
-    public void onNetworkUnavailable(String noInternetMessage) {
-        if (serviceResponse != null) serviceResponse.onNetworkUnavailable(noInternetMessage);
+    public void onError(VolleyError error) {
+        if (serviceResponse != null) serviceResponse.onError(error);
     }
 
-    protected void setOnServiceLoading(OnServiceLoading onServiceLoading) {
-        Service.getInstance().setOnServiceLoading(onServiceLoading);
-    }
-
-    @Override
-    public void setOnServiceLoadingListener(OnServiceLoading onServiceLoading) {
-        this.onServiceLoading = onServiceLoading;
-    }
-
-    @Override
-    public void onStartLoadingProgress() {
-        if (onServiceLoading != null) onServiceLoading.onStartLoadingProgress();
-    }
-
-    @Override
-    public void onLoadingProgressComplete() {
-        if (onServiceLoading != null) onServiceLoading.onLoadingProgressComplete();
-    }
 }

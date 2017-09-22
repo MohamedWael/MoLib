@@ -9,6 +9,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,15 +24,7 @@ import com.blogspot.mowael.molib.utilities.Logger;
 
 //// TODO: 6/12/2017 Make sure to remove any allocated variable on the on destroy method
 
-public abstract class MoFragment extends Fragment implements MoContract.MoView, SwipeRefreshLayout.OnRefreshListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public abstract class MoFragment<T extends MoContract.MoPresenter> extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private View rootView;
     private ProgressBar pbProgress;
@@ -43,30 +36,10 @@ public abstract class MoFragment extends Fragment implements MoContract.MoView, 
         // Required empty public constructor
     }
 
-//    /**
-//     * Use this factory method to create a new instance of
-//     * this fragment using the provided parameters.
-//     *
-//     * @param param1 Parameter 1.
-//     * @param param2 Parameter 2.
-//     * @return A new instance of fragment MoFragment.
-//     */
-//    public static MoFragment newInstance(String param1, String param2) {
-//        MoFragment fragment = new MoFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -85,14 +58,26 @@ public abstract class MoFragment extends Fragment implements MoContract.MoView, 
         rlFragmentRoot = (RelativeLayout) rootView.findViewById(R.id.rlFragmentRoot);
         pbProgress = (ProgressBar) rootView.findViewById(R.id.pbProgress);
         llBlockView = (LinearLayout) rootView.findViewById(R.id.llBlockView);
-        setRefreshing(false);
+        enableSwipeRefresh(false);
         srlRoot.setOnRefreshListener(this);
         llBlockView.setVisibility(View.GONE);
     }
 
     public void setRefreshing(boolean refreshing) {
-        if (srlRoot != null)
+        if (srlRoot != null) {
             srlRoot.setRefreshing(refreshing);
+        }
+    }
+
+    public boolean isRefreshing() {
+        if (srlRoot != null)
+            return srlRoot.isRefreshing();
+        return false;
+    }
+
+    public void enableSwipeRefresh(boolean refreshing) {
+        if (srlRoot != null)
+            srlRoot.setEnabled(refreshing);
     }
 
     /**
@@ -147,13 +132,6 @@ public abstract class MoFragment extends Fragment implements MoContract.MoView, 
             Logger.e("getRootProgressBar()", "is null");
         }
     }
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (getPresenter() != null)
-//            getPresenter().onActivityResult(requestCode, resultCode, data);
-//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -239,14 +217,14 @@ public abstract class MoFragment extends Fragment implements MoContract.MoView, 
     public void onRefresh() {
 
     }
-
-
-    @Override
+    public boolean isRunning() {
+        FragmentActivity activity = getActivity();
+        return activity != null && isAdded();
+    }
     public void onStartLoadingProgress() {
         // in your base fragment start your own progress view or progress dialog
     }
 
-    @Override
     public void onLoadingProgressComplete() {
         // in your base fragment stop your own progress view or progress dialog
     }
@@ -257,11 +235,11 @@ public abstract class MoFragment extends Fragment implements MoContract.MoView, 
 
     @Override
     public void onDestroy() {
-        if (rootView != null) rootView = null;
         if (pbProgress != null) pbProgress = null;
         if (rlFragmentRoot != null) rlFragmentRoot = null;
         if (srlRoot != null) srlRoot = null;
         if (llBlockView != null) llBlockView = null;
+        if (rootView != null) rootView = null;
         if (getPresenter() != null) {
             getPresenter().onDestroy();
             MoContract.MoPresenter presenter = getPresenter();
@@ -269,4 +247,6 @@ public abstract class MoFragment extends Fragment implements MoContract.MoView, 
         }
         super.onDestroy();
     }
+
+    public abstract T getPresenter();
 }

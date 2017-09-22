@@ -15,29 +15,22 @@ import org.json.JSONObject;
 
 public interface MoContract {
 
-    interface MoView<T extends MoPresenter> extends OnServiceLoading {
-        T getPresenter();
+    interface MoView extends OnServiceLoading {
+
     }
 
-    interface MoPresenter<T extends MoContract.MoView> {
-
-        T getView();
+    interface MoPresenter {
 
         void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults);
 
-//        void onActivityResult(int requestCode, int resultCode, Intent data);
-
         void onDestroy();
-
-        MoContract.MoBusiness getService();
     }
 
     interface MoBusiness {
 
-        void setOnServiceLoadingListener(OnServiceLoading onServiceLoading);
     }
 
-    interface MoBusinessWithService<T extends GeneralResponse> extends ServiceResponseListener<T> {
+    interface MoBusinessWithService<T extends GeneralResponse> extends ServiceResponseListener {
         void executeGET(String url, JSONObject body, ServiceResponseListener serviceResponse) throws Exception;
 
         void executeGETForType(Class<T> typeResponse, String url, JSONObject body, ServiceResponseListener serviceResponse) throws Exception;

@@ -29,6 +29,7 @@ public class SQLCreator {
     }
 
     private static final String CREATE_TABLE = "CREATE TABLE ";
+    private static final String CREATE_TABLE_IF_NOT_EXISTS = "CREATE TABLE IF NOT EXISTS";
     private static final String DROP_TABLE_IF_EXISTS = "DROP TABLE IF EXISTS ";
     private static final String SELECT_ALL_FROM = "SELECT * FROM ";
     private static final String DISTINCT = "DISTINCT";
@@ -38,7 +39,15 @@ public class SQLCreator {
     private static final String INSERT_INTO = "INSERT INTO ";
 
     public static String createTable(String tableName, HashMap<String, DBDataTypes> columns) {
-        String createTable = CREATE_TABLE + tableName + "(";
+        return createTable(CREATE_TABLE, tableName, columns);
+    }
+
+    public static String createTableIfNotExists(String tableName, HashMap<String, DBDataTypes> columns) {
+        return createTable(CREATE_TABLE_IF_NOT_EXISTS, tableName, columns);
+    }
+
+    private static String createTable(String sql, String tableName, HashMap<String, DBDataTypes> columns) {
+        String createTable = sql + tableName + "(";
         ArrayList<String> columnNames = new ArrayList<>();
         for (String key : columns.keySet()) {
             columnNames.add(key + " " + columns.get(key).getDataType());

@@ -12,7 +12,6 @@ import android.support.annotation.NonNull;
 import com.blogspot.mowael.molib.network.Service;
 import com.blogspot.mowael.molib.storage.CacheManager;
 import com.blogspot.mowael.molib.storage.SharedPreferencesManager;
-import com.blogspot.mowael.molib.storage.database.RealmDB;
 import com.blogspot.mowael.molib.utilities.LocaleHelper;
 import com.blogspot.mowael.molib.utilities.MoUiUtil;
 
@@ -28,7 +27,6 @@ public class MoApplication extends Application {
     public void onCreate() {
         super.onCreate();
         CacheManager.getInstance();
-        RealmDB.getInstance(this, "mo_application", 1);
         SharedPreferencesManager.getInstance().setContext(this).initSharedPreferences();
         Service.getInstance().initService(getApplicationContext());
         MoUiUtil.getInstance().setContext(getApplicationContext());
@@ -50,10 +48,6 @@ public class MoApplication extends Application {
             currentActivity.finishAndRemoveTask();
         }
         System.exit(0);
-    }
-
-    public void onTerminate() {
-        super.onTerminate();
     }
 
     @Override

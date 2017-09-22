@@ -11,7 +11,7 @@ public class MoConfig {
     private final static int NONE_INT = Integer.MIN_VALUE;
     private final static float NONE_FLOAT = Float.MIN_VALUE;
 
-    public static final int SPLASH_TIME_OUT = 3000;
+    public static final int DEFAULT_SPLASH_TIME_OUT = 3000;
 
     public static final boolean LOG_TOGGLE = true;
 

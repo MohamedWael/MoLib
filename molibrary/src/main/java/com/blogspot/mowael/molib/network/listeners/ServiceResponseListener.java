@@ -1,5 +1,6 @@
 package com.blogspot.mowael.molib.network.listeners;
 
+import com.android.volley.VolleyError;
 import com.blogspot.mowael.molib.network.pojo.GeneralResponse;
 
 import org.json.JSONObject;
@@ -8,11 +9,11 @@ import org.json.JSONObject;
  * Created by moham on 5/14/2017.
  */
 
-public interface ServiceResponseListener<T extends GeneralResponse> {
+public interface ServiceResponseListener {
 
-    void onResponseSuccess(T response);
+    void onResponse(JSONObject response);
 
-    void onResponse(JSONObject response, int responseCode);
+    <T extends GeneralResponse> void onResponseParsingSuccess(T response);
 
-    void onNetworkUnavailable(String noInternetMessage);
+    void onError(VolleyError error);
 }
