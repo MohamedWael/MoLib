@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 
 import com.blogspot.mowael.molib.R;
 import com.blogspot.mowael.molib.application.MoApplication;
+import com.blogspot.mowael.molib.dialog.MoProgressDialog;
 import com.blogspot.mowael.molib.fragments.MoFragment;
 
 public class MoActivity extends AppCompatActivity {
@@ -34,6 +35,8 @@ public class MoActivity extends AppCompatActivity {
     private MoFragment fragment;
     private boolean isRequestPermissionsResultForFragmentAllowed = false;
     private boolean isActivityResultFragmentAllowed = false;
+
+    private MoProgressDialog moProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -253,10 +256,26 @@ public class MoActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void showProgressDialog() {
+        getMoProgressDialog().show();
+    }
+
+    public void hideProgressDialog() {
+        getMoProgressDialog().dismiss();
+    }
+
+    public MoProgressDialog getMoProgressDialog() {
+        if (moProgressDialog == null) {
+            moProgressDialog = MoProgressDialog.newInstance(this);
+        }
+        return moProgressDialog;
+    }
+
     @Override
     protected void onDestroy() {
-        if (fragment != null)
-            fragment = null;
+
+        fragment = null;
+        moProgressDialog = null;
         super.onDestroy();
     }
 }

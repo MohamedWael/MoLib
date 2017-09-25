@@ -19,12 +19,13 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.blogspot.mowael.molib.R;
+import com.blogspot.mowael.molib.activities.MoActivity;
 import com.blogspot.mowael.molib.presenter.MoContract;
 import com.blogspot.mowael.molib.utilities.Logger;
 
 //// TODO: 6/12/2017 Make sure to remove any allocated variable on the on destroy method
 
-public abstract class MoFragment<T extends MoContract.MoPresenter> extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public abstract class MoFragment<T extends MoContract.MoPresenter> extends Fragment implements MoContract.MoView, SwipeRefreshLayout.OnRefreshListener {
 
     private View rootView;
     private ProgressBar pbProgress;
@@ -217,10 +218,16 @@ public abstract class MoFragment<T extends MoContract.MoPresenter> extends Fragm
     public void onRefresh() {
 
     }
+
+    protected void finish() {
+        getActivity().finish();
+    }
+
     public boolean isRunning() {
         FragmentActivity activity = getActivity();
         return activity != null && isAdded();
     }
+
     public void onStartLoadingProgress() {
         // in your base fragment start your own progress view or progress dialog
     }
@@ -229,22 +236,34 @@ public abstract class MoFragment<T extends MoContract.MoPresenter> extends Fragm
         // in your base fragment stop your own progress view or progress dialog
     }
 
-    protected void finish() {
-        getActivity().finish();
+    @Override
+    public void showProgress(boolean show) {
+        showRootProgress(show);
+    }
+
+    @Override
+    public void showProgressDialog() {
+        ((MoActivity) getActivity()).showProgressDialog();
+    }
+
+    @Override
+    public void hideProgressDialog() {
+        ((MoActivity) getActivity()).showProgressDialog();
     }
 
     @Override
     public void onDestroy() {
-        if (pbProgress != null) pbProgress = null;
-        if (rlFragmentRoot != null) rlFragmentRoot = null;
-        if (srlRoot != null) srlRoot = null;
-        if (llBlockView != null) llBlockView = null;
-        if (rootView != null) rootView = null;
         if (getPresenter() != null) {
             getPresenter().onDestroy();
             MoContract.MoPresenter presenter = getPresenter();
             presenter = null;
         }
+        if (pbProgress != null) pbProgress = null;
+        if (rlFragmentRoot != null) rlFragmentRoot = null;
+        if (srlRoot != null) srlRoot = null;
+        if (llBlockView != null) llBlockView = null;
+        if (rootView != null) rootView = null;
+
         super.onDestroy();
     }
 

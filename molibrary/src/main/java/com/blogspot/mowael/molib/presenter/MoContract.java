@@ -17,6 +17,12 @@ public interface MoContract {
 
     interface MoView extends OnServiceLoading {
 
+        void showProgress(boolean show);
+
+        void showProgressDialog();
+
+        void hideProgressDialog();
+
     }
 
     interface MoPresenter {
