@@ -22,6 +22,10 @@ compile project(':molibrary')
 
 Any contriputions are welcomed
 
+## Sample
+
+[A simple sample which demonstrates the usage MoActivity, MoFragment, and MoBusiness](https://github.com/MohamedWael/AthletesListingCodeExercise)
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
