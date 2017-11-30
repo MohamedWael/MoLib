@@ -12,10 +12,11 @@ import java.util.HashMap;
 public class SQLCreator {
 
     public enum DBDataTypes {
-        PRIMARY_KEY("PRIMARY KEY"), UNIQUE("UNIQUE"), AUTO_INCREMENT("AUTO_INCREMENT"), NOT_NULL("NOT NULL"),
-        TEXT("TEXT"), TEXT_UNIQUE(TEXT + " " + UNIQUE.getDataType()),
-        INTEGER("INTEGER"), INTEGER_PRIMARY_KEY(INTEGER.getDataType() + " " + PRIMARY_KEY.getDataType()),
-        DOUBLE("DOUBLE"), DOUBLE_PRIMARY_KEY(DOUBLE.getDataType() + " " + PRIMARY_KEY.getDataType());
+        PRIMARY_KEY("PRIMARY KEY"), UNIQUE("UNIQUE"), AUTO_INCREMENT("AUTOINCREMENT"), PRIMARY_KEY_AUTOINCREMENT(PRIMARY_KEY.getDataType() + SPACE + AUTO_INCREMENT.getDataType()), NOT_NULL("NOT NULL"),
+        TEXT("TEXT"), TEXT_UNIQUE(TEXT + SPACE + UNIQUE.getDataType()),
+        INTEGER("INTEGER"), INTEGER_PRIMARY_KEY(INTEGER.getDataType() + SPACE + PRIMARY_KEY.getDataType()),
+        INTEGER_PRIMARY_KEY_AUTO_INCREMENT(INTEGER.getDataType() + SPACE + PRIMARY_KEY_AUTOINCREMENT.getDataType()),
+        DOUBLE("DOUBLE"), DOUBLE_PRIMARY_KEY(DOUBLE.getDataType() + SPACE + PRIMARY_KEY.getDataType());
 
         private String dataType;
 
@@ -28,6 +29,7 @@ public class SQLCreator {
         }
     }
 
+    private static final String SPACE = " ";
     private static final String CREATE_TABLE = "CREATE TABLE ";
     private static final String CREATE_TABLE_IF_NOT_EXISTS = "CREATE TABLE IF NOT EXISTS";
     private static final String DROP_TABLE_IF_EXISTS = "DROP TABLE IF EXISTS ";

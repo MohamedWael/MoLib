@@ -2,6 +2,7 @@ package com.blogspot.mowael.molib.presenter;
 
 import android.support.annotation.NonNull;
 
+import com.blogspot.mowael.molib.network.ErrorMessageHandler;
 import com.blogspot.mowael.molib.network.listeners.OnServiceLoading;
 import com.blogspot.mowael.molib.network.listeners.ServiceResponseListener;
 import com.blogspot.mowael.molib.network.pojo.GeneralResponse;
@@ -22,6 +23,13 @@ public interface MoContract {
         void showProgressDialog();
 
         void hideProgressDialog();
+
+        void showSnakeMessage(String msg);
+
+        void showSnakeMessage(int msgRes);
+
+        void showSnakeMessage(ErrorMessageHandler errorMessageHandler);
+
 
     }
 

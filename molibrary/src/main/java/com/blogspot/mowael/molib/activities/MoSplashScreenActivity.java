@@ -26,7 +26,7 @@ public class MoSplashScreenActivity extends MoActivity implements SplashScreenSe
             @Override
             public void run() {
                 Intent intentIntro = new Intent(MoSplashScreenActivity.this,
-                        settings != null ? settings.getMainActivityClass() : MoActivity.class);
+                        settings != null ? settings.getMainActivityClass() : getMainActivityClass());
 
                 if (settings.getBundle() != null) {
                     intentIntro.putExtras(settings.getBundle());

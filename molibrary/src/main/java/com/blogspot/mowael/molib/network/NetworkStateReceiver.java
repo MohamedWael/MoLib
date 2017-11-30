@@ -93,8 +93,8 @@ public class NetworkStateReceiver extends BroadcastReceiver {
     }
 
     public interface NetworkStateReceiverListener {
-        public void networkAvailable();
+        void networkAvailable();
 
-        public void networkUnavailable();
+        void networkUnavailable();
     }
 }

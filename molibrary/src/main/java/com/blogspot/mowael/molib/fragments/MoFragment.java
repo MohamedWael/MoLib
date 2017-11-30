@@ -8,18 +8,22 @@ import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.blogspot.mowael.molib.R;
 import com.blogspot.mowael.molib.activities.MoActivity;
+import com.blogspot.mowael.molib.network.ErrorMessageHandler;
 import com.blogspot.mowael.molib.presenter.MoContract;
 import com.blogspot.mowael.molib.utilities.Logger;
 
@@ -250,6 +254,41 @@ public abstract class MoFragment<T extends MoContract.MoPresenter> extends Fragm
     public void hideProgressDialog() {
         ((MoActivity) getActivity()).showProgressDialog();
     }
+
+    @Override
+    public void showSnakeMessage(String msg) {
+        if (getView() != null) {
+            final Snackbar snackbar = Snackbar.make(getView(), msg, Snackbar.LENGTH_SHORT);
+            snackbar.setAction(R.string.cancel, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    snackbar.dismiss();
+                }
+            });
+            snackbar.show();
+        } else {
+            if (!TextUtils.isEmpty(msg))
+                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void showSnakeMessage(int msgRes) {
+        showSnakeMessage(getString(msgRes));
+    }
+
+    @Override
+    public void showSnakeMessage(ErrorMessageHandler errorMessageHandler) {
+        if (errorMessageHandler != null) {
+            if (!TextUtils.isEmpty(errorMessageHandler.getMessage()))
+                showSnakeMessage(errorMessageHandler.getMessage());
+            else {
+                if (errorMessageHandler.getMessageRes() != 0)
+                    showSnakeMessage(errorMessageHandler.getMessageRes());
+            }
+        }
+    }
+
 
     @Override
     public void onDestroy() {

@@ -2,12 +2,11 @@ apply plugin: 'com.android.library'
 apply plugin: 'realm-android'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
     defaultConfig {
-        //applicationId "com.blogspot.mowael.molib"
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -21,27 +20,33 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+    maven { url 'https://maven.google.com' }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:appcompat-v7:26.+'
+    compile 'com.android.support:design:26.+'
     compile 'com.android.support:multidex:1.0.1'
-    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:support-v4:26.+'
 
 //external dependencies
     //networking
     compile 'com.android.volley:volley:1.0.0'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.github.bumptech.glide:glide:4.2.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.2.0'
     //json helper
-    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.google.code.gson:gson:2.8.2'
     compile 'javax.annotation:javax.annotation-api:1.2'
     //animation
     compile 'com.daimajia.easing:library:2.0@aar'
     compile 'com.daimajia.androidanimations:library:2.2@aar'
     //image cropper
-    compile 'com.theartofdev.edmodo:android-image-cropper:2.4.6'
+    compile 'com.theartofdev.edmodo:android-image-cropper:2.5.1'
     testCompile 'junit:junit:4.12'
 }
