@@ -7,7 +7,7 @@ An android base project that works as a starter for your project. It is based on
 Just clone the repo and add it as a module in your project then
 
 ```
-compile project(':molibrary')
+implementation project(':molibrary')
 ```
 ## Built With
 
