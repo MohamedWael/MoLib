@@ -1,1 +1,1 @@
-include ':molibrary'
+include ':molibrary', ':sample'
