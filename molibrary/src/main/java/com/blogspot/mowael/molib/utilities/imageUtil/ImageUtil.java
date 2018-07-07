@@ -1,4 +1,4 @@
-package com.blogspot.mowael.molib.utilities;
+package com.blogspot.mowael.molib.utilities.imageUtil;
 
 import android.app.Activity;
 import android.content.Context;
