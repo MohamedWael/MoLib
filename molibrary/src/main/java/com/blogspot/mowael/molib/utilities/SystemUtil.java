@@ -15,6 +15,8 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.widget.EditText;
 
+import com.blogspot.mowael.utilslibrary.Logger;
+
 import java.io.File;
 import java.util.List;
 

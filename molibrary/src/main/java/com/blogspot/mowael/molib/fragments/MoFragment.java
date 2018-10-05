@@ -25,7 +25,7 @@ import com.blogspot.mowael.molib.R;
 import com.blogspot.mowael.molib.activities.MoActivity;
 import com.blogspot.mowael.molib.network.ErrorMessageHandler;
 import com.blogspot.mowael.molib.presenter.MoContract;
-import com.blogspot.mowael.molib.utilities.Logger;
+import com.blogspot.mowael.utilslibrary.Logger;
 
 //// TODO: 6/12/2017 Make sure to remove any allocated variable on the on destroy method
 

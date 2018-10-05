@@ -6,8 +6,8 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 import com.blogspot.mowael.molib.R;
-import com.blogspot.mowael.molib.utilities.Logger;
 import com.blogspot.mowael.molib.utilities.MoConfig;
+import com.blogspot.mowael.utilslibrary.Logger;
 
 public class MoSplashScreenActivity extends MoActivity implements SplashScreenSettings {
 

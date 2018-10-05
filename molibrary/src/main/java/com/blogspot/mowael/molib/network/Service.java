@@ -8,8 +8,8 @@ import com.android.volley.VolleyError;
 import com.blogspot.mowael.molib.R;
 import com.blogspot.mowael.molib.network.listeners.ServiceResponseListener;
 import com.blogspot.mowael.molib.network.pojo.GeneralResponse;
-import com.blogspot.mowael.molib.utilities.Logger;
 import com.blogspot.mowael.molib.utilities.ViewUtils;
+import com.blogspot.mowael.utilslibrary.Logger;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 

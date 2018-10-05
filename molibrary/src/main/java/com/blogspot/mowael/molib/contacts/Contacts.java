@@ -11,8 +11,8 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 
 import com.blogspot.mowael.molib.contacts.contactsPOJO.ContactInfo;
-import com.blogspot.mowael.molib.utilities.Logger;
 import com.blogspot.mowael.molib.utilities.MoConfig;
+import com.blogspot.mowael.utilslibrary.Logger;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;

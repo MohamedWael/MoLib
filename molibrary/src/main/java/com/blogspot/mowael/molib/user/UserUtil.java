@@ -3,8 +3,8 @@ package com.blogspot.mowael.molib.user;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.blogspot.mowael.molib.storage.SharedPreferencesManager;
 import com.blogspot.mowael.molib.utilities.MoConfig;
+import com.blogspot.mowael.utilslibrary.storage.SharedPreferencesManager;
 
 /**
  * Created by moham on 4/20/2017.

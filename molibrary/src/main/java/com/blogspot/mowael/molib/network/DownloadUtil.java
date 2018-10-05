@@ -10,7 +10,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.widget.Toast;
 
-import com.blogspot.mowael.molib.utilities.Logger;
+import com.blogspot.mowael.utilslibrary.Logger;
 
 import java.io.File;
 

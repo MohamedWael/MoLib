@@ -1,5 +1,7 @@
 package com.blogspot.mowael.molib.utilities;
 
+import com.blogspot.mowael.utilslibrary.Logger;
+
 /**
  * Created by moham on 2/1/2017.
  */

@@ -2,7 +2,7 @@ package com.blogspot.mowael.molib.network;
 
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.blogspot.mowael.molib.utilities.Logger;
+import com.blogspot.mowael.utilslibrary.Logger;
 
 import org.json.JSONObject;
 

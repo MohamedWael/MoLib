@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 
+import com.blogspot.mowael.utilslibrary.Logger;
+
 /**
  * Created by mwael on 4/25/2017.
  */

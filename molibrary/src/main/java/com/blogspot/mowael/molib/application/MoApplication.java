@@ -11,9 +11,9 @@ import android.support.annotation.NonNull;
 
 import com.blogspot.mowael.molib.network.Service;
 import com.blogspot.mowael.molib.storage.CacheManager;
-import com.blogspot.mowael.molib.storage.SharedPreferencesManager;
 import com.blogspot.mowael.molib.utilities.LocaleHelper;
 import com.blogspot.mowael.molib.utilities.MoUiUtil;
+import com.blogspot.mowael.utilslibrary.storage.SharedPreferencesManager;
 
 import java.util.Locale;
 
@@ -27,7 +27,7 @@ public class MoApplication extends Application {
     public void onCreate() {
         super.onCreate();
         CacheManager.getInstance();
-        SharedPreferencesManager.getInstance().setContext(this).initSharedPreferences();
+        SharedPreferencesManager.getInstance().initSharedPreferences(this);
         Service.getInstance().initService(getApplicationContext());
         MoUiUtil.getInstance().setContext(getApplicationContext());
         LocaleHelper.onAttach(getBaseContext());

@@ -1,6 +1,6 @@
 package com.blogspot.mowael.molib.storage;
 
-import com.blogspot.mowael.molib.utilities.Logger;
+import com.blogspot.mowael.utilslibrary.Logger;
 
 import java.util.HashMap;
 
