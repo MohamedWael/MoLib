@@ -1,8 +1,8 @@
 package com.blogspot.mowael.molib.activities;
 
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.LayoutRes;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Created by moham on 3/2/2017.

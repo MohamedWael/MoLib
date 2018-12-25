@@ -1,7 +1,7 @@
 package com.blogspot.mowael.molib.application;
 
 import android.content.Context;
-import android.support.multidex.MultiDex;
+import androidx.multidex.MultiDex;
 
 /**
  * Created by moham on 3/2/2017.

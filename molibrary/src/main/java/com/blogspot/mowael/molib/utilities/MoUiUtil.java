@@ -3,7 +3,7 @@ package com.blogspot.mowael.molib.utilities;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorRes;
+import androidx.annotation.ColorRes;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;

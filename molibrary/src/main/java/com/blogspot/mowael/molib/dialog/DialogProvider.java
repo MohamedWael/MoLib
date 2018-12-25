@@ -2,8 +2,8 @@ package com.blogspot.mowael.molib.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 
 import com.blogspot.mowael.molib.dialog.listener.DialogListener;

@@ -1,7 +1,7 @@
 package com.blogspot.mowael.molib.presenter;
 
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.android.volley.VolleyError;
 import com.blogspot.mowael.molib.network.listeners.ServiceResponseListener;

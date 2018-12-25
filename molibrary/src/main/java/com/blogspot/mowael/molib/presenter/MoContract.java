@@ -1,6 +1,6 @@
 package com.blogspot.mowael.molib.presenter;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.blogspot.mowael.molib.network.ErrorMessageHandler;
 import com.blogspot.mowael.molib.network.listeners.OnServiceLoading;

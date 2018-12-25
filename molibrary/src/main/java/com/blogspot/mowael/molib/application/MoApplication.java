@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.blogspot.mowael.molib.network.Service;
 import com.blogspot.mowael.molib.storage.CacheManager;

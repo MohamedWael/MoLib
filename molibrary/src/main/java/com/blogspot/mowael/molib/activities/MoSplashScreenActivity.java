@@ -3,7 +3,7 @@ package com.blogspot.mowael.molib.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.blogspot.mowael.molib.R;
 import com.blogspot.mowael.molib.utilities.MoConfig;

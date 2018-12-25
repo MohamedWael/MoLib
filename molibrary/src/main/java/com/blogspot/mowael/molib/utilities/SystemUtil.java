@@ -9,7 +9,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.telephony.SmsManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
